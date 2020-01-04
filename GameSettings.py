@@ -7,9 +7,9 @@ class GameSettings:
         self.map_height_tiles = 100
         self.map_viewport_xtiles = 30
         self.map_viewport_ytiles = 20
-        self.map_tile_pixels = 32
+        self.map_tile_pixels = 64
 
-        self.window_width = self.map_viewport_xtiles * self.map_tile_pixels
-        self.window_height = self.map_viewport_ytiles * self.map_tile_pixels
+        self.window_width = 1000
+        self.window_height = 700
 
-        self.FPS = 5
+        self.FPS = 20

@@ -6,7 +6,7 @@ class SpriteSheet:
     def __init__(self, filename):
         """Load the image sprite sheet from file."""
         try:
-            self.sheet = pygame.image.load(filename).convert()
+            self.sheet = pygame.image.load(filename).convert_alpha()
         except pygame.error as e:
             print(f"Unable to load sprite sheet image: {filename}")
             raise SystemExit(e)
@@ -18,7 +18,7 @@ class SpriteSheet:
         """Load a specific image from a specific rectangle."""
         # Loads image from x, y, x+offset, y+offset.
         rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert()
+        image = pygame.Surface(rect.size, pygame.SRCALPHA) #.convert()
         image.blit(self.sheet, (0, 0), rect)
         if colorkey is not None:
             if colorkey is -1:
