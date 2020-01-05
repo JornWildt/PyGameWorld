@@ -3,6 +3,13 @@ import pyganim
 import sys
 import random
 from GameSettings import GameSettings
+from ECS.GameEnvironment import GameEnvironment
+from ECS.GameEngine import GameEngine
+from ECS.SystemsRepository import SystemsRepository
+from ECS.EntityRepository import EntityRepository
+from Physics.PhysicsSystem import PhysicsSystem
+from EntityFactories.GhostFactory import GhostFactory
+
 from Tile import Tile
 from Tileset import Tileset
 from SpriteSheet import SpriteSheet
@@ -72,6 +79,25 @@ clock = pygame.time.Clock()
 
 player_x = 400
 player_y = 300
+
+
+systems = SystemsRepository()
+systems.add(PhysicsSystem())
+
+entities = EntityRepository()
+
+game_environment = GameEnvironment()
+game_environment.systems_repository = systems
+game_environment.entities_repository = entities
+
+game = GameEngine(settings, game_environment)
+
+ghost = GhostFactory.build_a_ghost('Mammo', 2,2)
+entities.add_entity(ghost)
+
+game.run_game_loop()
+
+1/0
 
 while True:
     # Event processing here, stuff the users does.
