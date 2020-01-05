@@ -1,4 +1,8 @@
-OriginalPixelArt/**/*.png
+OriginalPixelArt/ArMM1998-Zelda/*
+OriginalPixelArt/JW/*.png
+OriginalPixelArt/JW/*.gif
+
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
