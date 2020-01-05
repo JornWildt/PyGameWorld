@@ -1,7 +1,7 @@
 ﻿from ECS.Component import Component
 
 class PhysicsComponent(Component):
-    def __init__(self, pos, vel):
+    def __init__(self, vel, acc):
         super().__init__()
-        self.position = pos
         self.velocity = vel
+        self.acceleration = acc

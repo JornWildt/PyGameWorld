@@ -18,9 +18,10 @@ class GameEngine:
                     pygame.quit()
                     sys.exit()
 
+            self.game_environment.scene.start_frame()
+
             for system in self.game_environment.systems_repository.get_all():
                 system.update(self.game_environment)
-
 
             pygame.display.flip()
 

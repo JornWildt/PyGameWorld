@@ -1,10 +1,12 @@
 ﻿import uuid
 
 class Entity:
-    def __init__(self, id, components):
-        self.id = id if id != None else uuid.uuid4()
-
+    def __init__(self, components):
+        self.id = None
+        self.components = {}
         for c in components:
-            c.id = self.id
+            c.entity = self
+            self.components[type(c)] = c
 
-        self.components = components
+    # def get_component_of_type(self, type):
+    #     return self.components[type] if type in self.components else None

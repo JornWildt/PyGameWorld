@@ -7,7 +7,12 @@ from ECS.GameEnvironment import GameEnvironment
 from ECS.GameEngine import GameEngine
 from ECS.SystemsRepository import SystemsRepository
 from ECS.EntityRepository import EntityRepository
+from ECS.Entity import Entity
+from SimpleComponents.NameComponent import NameComponent
 from Physics.PhysicsSystem import PhysicsSystem
+from Physics.RandomMovementSystem import RandomMovementSystem
+from Rendering.DisplaySystem import DisplaySystem
+from Rendering.VisualComponent import VisualComponent
 from EntityFactories.GhostFactory import GhostFactory
 
 from Tile import Tile
@@ -20,6 +25,7 @@ pygame.init()
 settings = GameSettings()
 
 screen = pygame.display.set_mode((settings.window_width, settings.window_height))
+#screen = pygame.display.set_mode(flags = pygame.FULLSCREEN)
 
 pygame.display.set_caption("World")
 
@@ -41,7 +47,7 @@ floor_sprites.define("floor_wall", (64,0,64,64))
 floor1 = floor_sprites.get('floor1')
 floor2 = floor_sprites.get('floor2')
 
-ghostImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ghost.png", rows=1, cols=5, rects=[])
+ghostImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ghost3D.png", rows=1, cols=1, rects=[])
 ghostFrames = list(zip(ghostImages, [100] * len(ghostImages)))
 ghostAnim = pyganim.PygAnimation(ghostFrames)
 ghostAnim.play()
@@ -70,7 +76,8 @@ scene_sprites = {
     'floor_wall': floor_sprites.get('floor_wall'),
     'wall': box,
     'box': box,
-    'barrel': barrel
+    'barrel': barrel,
+    'ghost': ghostAnim
 }
 
 scene.load_scene_from_string(scene_src, scene_sprites)
@@ -83,17 +90,34 @@ player_y = 300
 
 systems = SystemsRepository()
 systems.add(PhysicsSystem())
+systems.add(RandomMovementSystem())
+# Display registered last! Ensures other systems can register as displayable for rendering
+systems.add(DisplaySystem())
 
 entities = EntityRepository()
 
 game_environment = GameEnvironment()
 game_environment.systems_repository = systems
 game_environment.entities_repository = entities
+game_environment.sprites = scene_sprites
+game_environment.scene = scene
+game_environment.screen = screen
 
 game = GameEngine(settings, game_environment)
 
-ghost = GhostFactory.build_a_ghost('Mammo', 2,2)
+ghost = GhostFactory.build_a_ghost('Mammo', 3,3)
 entities.add_entity(ghost)
+
+entities.add_entity(GhostFactory.build_a_ghost('Mammi', 8,8))
+entities.add_entity(GhostFactory.build_a_ghost('Mammy', 8,6))
+entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
+
+sceneVisual = Entity(components = [
+    NameComponent('Main scene'),
+    VisualComponent(scene)
+])
+entities.add_entity(sceneVisual)
+
 
 game.run_game_loop()
 
