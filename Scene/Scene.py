@@ -1,6 +1,6 @@
 ﻿import pygame as pygame
-from Tile import Tile
-from TileType import *
+from .Tile import Tile
+from .TileType import *
 
 class Scene:
 
@@ -60,7 +60,7 @@ class Scene:
             self.items_index[z][x][y].append(SceneItem(pos,sprite))
 
 
-    def draw(self, screen):
+    def render(self, screen):
 
         xmult = self.settings.map_tile_pixels/2
         ymult = self.settings.map_tile_pixels/4

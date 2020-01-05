@@ -1,6 +1,4 @@
-﻿from Entity import Entity
-
-class EntityRepository:
+﻿class EntityRepository:
 
     def __init__(self):
         self.entities_index = {}
