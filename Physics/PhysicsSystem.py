@@ -12,7 +12,7 @@ class PhysicsSystem:
                 body.velocity[2] + body.acceleration[2])
             
             pos.position = (
-                min(10, max(0, pos.position[0] + body.velocity[0])), 
-                min(10, max(0, pos.position[1] + body.velocity[1])),
+                min(20, max(0, pos.position[0] + body.velocity[0])), 
+                min(20, max(0, pos.position[1] + body.velocity[1])),
                 min(3, max(0, pos.position[2] + body.velocity[2])))
             

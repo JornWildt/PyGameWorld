@@ -3,15 +3,15 @@
         scene_src = '''
 XXXXXXXXXXXX
 x..........X
+x.....B....X
 x..........X
 x..........X
 x..........X
+XXX**XX**XXX
+x....b....BX
 x..........X
-XXXXXXXX*XXX
-x...b.....BX
-x...b......X
 x..........X
-x...bbb..b.X
+x...b....b.X
 x........b.X
 x..........X
 xxxxxxxxxxxx

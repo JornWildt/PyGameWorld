@@ -9,6 +9,7 @@ from ECS.Entity import Entity
 from SimpleComponents.NameComponent import NameComponent
 from Physics.PhysicsSystem import PhysicsSystem
 from Physics.RandomMovementSystem import RandomMovementSystem
+from Physics.BallMovementSystem import BallMovementSystem
 from Rendering.DisplaySystem import DisplaySystem
 from Rendering.DisplayComponent import DisplayComponent
 from Blueprint.GhostFactory import GhostFactory
@@ -29,6 +30,10 @@ barrels_sprites = SpriteSheet("OriginalPixelArt/JW/barrel3D.png")
 barrels_sprites.define("barrel", (0,0,48,48))
 barrel = barrels_sprites.get('barrel')
 
+stub_sprites = SpriteSheet("OriginalPixelArt/JW/Stub3D.png")
+stub_sprites.define("stub", (0,0,64,64))
+stub = stub_sprites.get('stub')
+
 furniture_sprites = SpriteSheet("OriginalPixelArt/JW/furniture3D.png")
 furniture_sprites.define("box", (0,0,64,64))
 box = furniture_sprites.get('box')
@@ -45,14 +50,20 @@ ghostFrames = list(zip(ghostImages, [100] * len(ghostImages)))
 ghostAnim = pyganim.PygAnimation(ghostFrames)
 ghostAnim.play()
 
+ballImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ball3D.png", rows=1, cols=4, rects=[])
+ballFrames = list(zip(ballImages, [100] * len(ballImages)))
+ballAnim = pyganim.PygAnimation(ballFrames)
+ballAnim.play()
+
 scene = Scene(settings)
 scene_sprites = {
     'floor': floor1,
     'floor_wall': floor_sprites.get('floor_wall'),
     'wall': box,
     'box': box,
-    'barrel': barrel,
-    'ghost': ghostAnim
+    'barrel': stub,
+    'ghost': ghostAnim,
+    'ball': ballAnim
 }
 
 SceneBuilder.build_scene1(scene, scene_sprites)
@@ -62,6 +73,7 @@ clock = pygame.time.Clock()
 systems = SystemsRepository()
 systems.add(PhysicsSystem())
 systems.add(RandomMovementSystem())
+systems.add(BallMovementSystem())
 # Display registered last! Ensures other systems can register as displayable for rendering
 systems.add(DisplaySystem())
 
@@ -76,12 +88,12 @@ game_environment.screen = screen
 
 game = GameEngine(settings, game_environment)
 
-ghost = GhostFactory.build_a_ghost('Mammo', 3,3)
-entities.add_entity(ghost)
-
+entities.add_entity(GhostFactory.build_a_ghost('Mammo', 3,3))
 entities.add_entity(GhostFactory.build_a_ghost('Mammi', 8,8))
 entities.add_entity(GhostFactory.build_a_ghost('Mammy', 8,6))
 entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
+
+entities.add_entity(GhostFactory.build_a_ball('Bam', 2,7))
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),

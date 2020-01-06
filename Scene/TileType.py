@@ -1,11 +1,11 @@
 ﻿class TileType:
 
-    def __init__(self, name):
+    def __init__(self, name, is_blocking):
         self.name = name
-        self.speed = 1
+        self.is_blocking = is_blocking
 
-TileType.Sea = TileType('sea')
-TileType.Grass = TileType('grass')
-TileType.Floor = TileType('floor')
-TileType.Wall = TileType('wall')
+TileType.Sea = TileType('sea', True)
+TileType.Grass = TileType('grass', False)
+TileType.Floor = TileType('floor', False)
+TileType.Wall = TileType('wall', True)
 

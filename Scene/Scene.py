@@ -32,6 +32,8 @@ class Scene:
             for y in range(self.height):
                 if scene_src_array[y][x] == 'X':
                     self.tile_map[1][x][y] = Tile(TileType.Wall, wall_sprite)
+                elif scene_src_array[y][x] == 'x':
+                    self.tile_map[1][x][y] = Tile(TileType.Wall, None)
                 elif scene_src_array[y][x] == 'B':
                     self.tile_map[1][x][y] = Tile(TileType.Wall, box_sprite)
                 elif scene_src_array[y][x] == 'b':
@@ -59,6 +61,11 @@ class Scene:
                 self.items_index[z][x][y] = []
             self.items_index[z][x][y].append(SceneItem(pos,sprite))
 
+    def get_tile_at(self, pos):
+        x = int(pos[0])
+        y = int(pos[1])
+        z = int(pos[2])
+        return self.tile_map[z][x][y]
 
     def render(self, screen):
 
@@ -76,7 +83,8 @@ class Scene:
                     if tile != None:
                         xpos = (x+y) * xmult + xoffset
                         ypos = (y-x) * ymult - z * zmult + yoffset
-                        screen.blit(tile.image, (xpos,ypos))
+                        if tile.image != None:
+                            screen.blit(tile.image, (xpos,ypos))
 
                     items = self.items_index[z][x][y]
                     for item in items if items != None else []:
