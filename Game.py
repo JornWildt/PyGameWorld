@@ -17,6 +17,7 @@ from Rendering.DisplayComponent import DisplayComponent
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.SceneBuilder import SceneBuilder
 from Blueprint.InputHandler import InputHandler
+from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Rendering.SpriteSheet import SpriteSheet
 from Rendering.ExtPygAnimation import ExtPygAnimation
 from Scene.Scene import Scene
@@ -88,6 +89,7 @@ systems.add(PhysicsSystem())
 systems.add(CollisionDetectionSystem())
 systems.add(RandomMovementSystem())
 systems.add(BallMovementSystem(message_bus))
+systems.add(PlayerMovementSystem(message_bus))
 # Display registered last! Ensures other systems can register as displayable for rendering
 systems.add(DisplaySystem())
 
@@ -109,8 +111,8 @@ game = GameEngine(settings, game_environment)
 #entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
 
 entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
-# entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
-#entities.add_entity(GhostFactory.build_a_player('Mum', 2,3))
+entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
+entities.add_entity(GhostFactory.build_a_player('Mum', 2,3))
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),

@@ -5,6 +5,7 @@ from Physics.PhysicsComponent import PhysicsComponent
 from Physics.RandomMovementComponent import RandomMovementComponent
 from Physics.BallMovementComponent import BallMovementComponent
 from Rendering.SpriteComponent import SpriteComponent
+from .PlayerMovementComponent import PlayerMovementComponent
 
 
 class GhostFactory:
@@ -38,9 +39,9 @@ class GhostFactory:
     def build_a_player(self, name, x,y):
         player = Entity([
             NameComponent(name),
-            BodyComponent((x,y,1), (1,1,3)),
+            BodyComponent((x,y,1), (0.9,0.9,2.9)),
             PhysicsComponent((0,0,0), (0, 0, 0)),
-            BallMovementComponent(),
+            PlayerMovementComponent(),
             SpriteComponent('player')
         ])
         return player

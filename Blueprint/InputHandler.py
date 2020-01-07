@@ -16,6 +16,8 @@ class InputHandler:
             InputHandler.intent = 'Left'
         elif event.key == pygame.K_DOWN:
             InputHandler.intent = 'Backward'
+        elif event.key == pygame.K_SPACE:
+            InputHandler.intent = 'Stop'
         # elif event.key == pygame.K_RIGHT:
         #     direction = (direction + 1) % 16
         # elif event.key == pygame.K_LEFT:
