@@ -6,15 +6,19 @@ from ECS.GameEngine import GameEngine
 from ECS.SystemsRepository import SystemsRepository
 from ECS.EntityRepository import EntityRepository
 from ECS.Entity import Entity
+from ECS.MessageBus import MessageBus
 from SimpleComponents.NameComponent import NameComponent
 from Physics.PhysicsSystem import PhysicsSystem
 from Physics.RandomMovementSystem import RandomMovementSystem
 from Physics.BallMovementSystem import BallMovementSystem
+from Physics.CollisionDetectionSystem import CollisionDetectionSystem
 from Rendering.DisplaySystem import DisplaySystem
 from Rendering.DisplayComponent import DisplayComponent
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.SceneBuilder import SceneBuilder
+from Blueprint.InputHandler import InputHandler
 from Rendering.SpriteSheet import SpriteSheet
+from Rendering.ExtPygAnimation import ExtPygAnimation
 from Scene.Scene import Scene
 
 pygame.init()
@@ -47,13 +51,19 @@ floor2 = floor_sprites.get('floor2')
 
 ghostImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ghost3D.png", rows=1, cols=1, rects=[])
 ghostFrames = list(zip(ghostImages, [100] * len(ghostImages)))
-ghostAnim = pyganim.PygAnimation(ghostFrames)
+ghostAnim = ExtPygAnimation(settings, ghostFrames)
 ghostAnim.play()
 
-ballImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ball3D.png", rows=1, cols=4, rects=[])
+ballImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ball3D.png", rows=1, cols=3, rects=[])
 ballFrames = list(zip(ballImages, [100] * len(ballImages)))
-ballAnim = pyganim.PygAnimation(ballFrames)
+ballAnim = ExtPygAnimation(settings, ballFrames)
 ballAnim.play()
+
+playerImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Player.png", rows=1, cols=1, rects=[])
+playerFrames = list(zip(playerImages, [100] * len(playerImages)))
+playerAnim = ExtPygAnimation(settings, playerFrames, (1,1,3))
+#playerAnim = pyganim.PygAnimation(playerFrames)
+playerAnim.play()
 
 scene = Scene(settings)
 scene_sprites = {
@@ -63,17 +73,21 @@ scene_sprites = {
     'box': box,
     'barrel': stub,
     'ghost': ghostAnim,
-    'ball': ballAnim
+    'ball': ballAnim,
+    'player': playerAnim
 }
 
 SceneBuilder.build_scene1(scene, scene_sprites)
 
 clock = pygame.time.Clock()
 
+message_bus = MessageBus()
+
 systems = SystemsRepository()
 systems.add(PhysicsSystem())
+systems.add(CollisionDetectionSystem())
 systems.add(RandomMovementSystem())
-systems.add(BallMovementSystem())
+systems.add(BallMovementSystem(message_bus))
 # Display registered last! Ensures other systems can register as displayable for rendering
 systems.add(DisplaySystem())
 
@@ -85,15 +99,18 @@ game_environment.entities_repository = entities
 game_environment.sprites = scene_sprites
 game_environment.scene = scene
 game_environment.screen = screen
+game_environment.message_bus = message_bus
+
+game_environment.message_bus.subscribe('key_down', InputHandler.on_key_down)
+game_environment.message_bus.subscribe('key_up', InputHandler.on_key_up)
 
 game = GameEngine(settings, game_environment)
 
-entities.add_entity(GhostFactory.build_a_ghost('Mammo', 3,3))
-entities.add_entity(GhostFactory.build_a_ghost('Mammi', 8,8))
-entities.add_entity(GhostFactory.build_a_ghost('Mammy', 8,6))
-entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
+#entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
 
-entities.add_entity(GhostFactory.build_a_ball('Bam', 2,7))
+entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
+# entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
+#entities.add_entity(GhostFactory.build_a_player('Mum', 2,3))
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),

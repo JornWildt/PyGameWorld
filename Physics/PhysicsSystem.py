@@ -1,18 +1,26 @@
 ﻿import random
 from .PhysicsComponent import PhysicsComponent
-from .PositionComponent import PositionComponent
+from .BodyComponent import BodyComponent
+from Rendering.SpriteComponent import SpriteComponent
 
 class PhysicsSystem:
     def update(self, game_environment):
-        for (pos,body) in game_environment.entities_repository.get_components_of_types(PositionComponent, PhysicsComponent):
 
-            body.velocity = (
-                body.velocity[0] + body.acceleration[0], 
-                body.velocity[1] + body.acceleration[1],
-                body.velocity[2] + body.acceleration[2])
+        # Use the scene as a 3D hashmap for item lookup
+        for (body, sprite) in game_environment.entities_repository.get_components_of_types(BodyComponent, SpriteComponent):
+            game_environment.scene.register_item(body.position, body.size, game_environment.sprites[sprite.sprite_id])
+
+        for (body,phys) in game_environment.entities_repository.get_components_of_types(BodyComponent, PhysicsComponent):
+
+            phys.previous_position = body.position
+
+            phys.velocity = (
+                phys.velocity[0] + phys.acceleration[0], 
+                phys.velocity[1] + phys.acceleration[1],
+                phys.velocity[2] + phys.acceleration[2])
             
-            pos.position = (
-                min(20, max(0, pos.position[0] + body.velocity[0])), 
-                min(20, max(0, pos.position[1] + body.velocity[1])),
-                min(3, max(0, pos.position[2] + body.velocity[2])))
+            body.position = (
+                min(20, max(0, body.position[0] + phys.velocity[0])), 
+                min(20, max(0, body.position[1] + phys.velocity[1])),
+                min(3, max(0, body.position[2] + phys.velocity[2])))
             

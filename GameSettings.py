@@ -12,4 +12,4 @@ class GameSettings:
         self.window_width = 1000
         self.window_height = 700
 
-        self.FPS = 20
+        self.FPS = 40

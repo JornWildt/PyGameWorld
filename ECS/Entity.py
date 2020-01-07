@@ -8,5 +8,5 @@ class Entity:
             c.entity = self
             self.components[type(c)] = c
 
-    # def get_component_of_type(self, type):
-    #     return self.components[type] if type in self.components else None
+    def get_component_of_type(self, type):
+        return self.components[type] if type in self.components else None
