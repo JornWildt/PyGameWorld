@@ -16,7 +16,6 @@ from Rendering.DisplaySystem import DisplaySystem
 from Rendering.DisplayComponent import DisplayComponent
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.SceneBuilder import SceneBuilder
-from Blueprint.InputHandler import InputHandler
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Rendering.SpriteSheet import SpriteSheet
 from Rendering.ExtPygAnimation import ExtPygAnimation
@@ -60,9 +59,9 @@ ballFrames = list(zip(ballImages, [100] * len(ballImages)))
 ballAnim = ExtPygAnimation(settings, ballFrames)
 ballAnim.play()
 
-playerImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Player.png", rows=1, cols=1, rects=[])
+playerImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Player.png", rows=1, cols=2, rects=[])
 playerFrames = list(zip(playerImages, [100] * len(playerImages)))
-playerAnim = ExtPygAnimation(settings, playerFrames, (1,1,3))
+playerAnim = ExtPygAnimation(settings, playerFrames, (1,1,2))
 #playerAnim = pyganim.PygAnimation(playerFrames)
 playerAnim.play()
 
@@ -103,16 +102,13 @@ game_environment.scene = scene
 game_environment.screen = screen
 game_environment.message_bus = message_bus
 
-game_environment.message_bus.subscribe('key_down', InputHandler.on_key_down)
-game_environment.message_bus.subscribe('key_up', InputHandler.on_key_up)
-
 game = GameEngine(settings, game_environment)
 
 #entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
 
 entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
 entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
-entities.add_entity(GhostFactory.build_a_player('Mum', 2,3))
+entities.add_entity(GhostFactory.build_a_player('Mum', 2,4))
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),

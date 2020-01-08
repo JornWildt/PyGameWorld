@@ -2,7 +2,6 @@
 from .BallMovementComponent import BallMovementComponent
 from .PhysicsComponent import PhysicsComponent
 from .BodyComponent import BodyComponent
-from Blueprint.InputHandler import InputHandler
 
 class BallMovementSystem:
     def __init__(self, message_bus):
@@ -12,6 +11,11 @@ class BallMovementSystem:
     def on_tile_collision(p):
         entity = p[0]
         tile = p[1]
+        
+        ball = entity.get_component_of_type(BallMovementComponent)
+        if ball == None:
+            return
+
         pos = entity.get_component_of_type(BodyComponent)
         body = entity.get_component_of_type(PhysicsComponent)
         if tile.tile_type.is_blocking:
@@ -50,34 +54,9 @@ class BallMovementSystem:
             if body.velocity[0] > maxv or body.velocity[0] < -maxv or body.velocity[1] > maxv or body.velocity[1] < -maxv or body.velocity[2] > maxv or body.velocity[2] < -maxv:
                 body.acceleration = (0,0,0)
                 body.velocity = (min(maxv, body.velocity[0]), min(maxv, body.velocity[1]), min(maxv, body.velocity[2]))
-            # elif InputHandler.intent == 'Forward':
-            #     body.acceleration = (0.01,-0.01,0.0)
-            # elif InputHandler.intent == 'Backward':
-            #     body.acceleration = (-0.01,0.01,0.0)
-            # elif InputHandler.intent == 'Left':
-            #     body.acceleration = (-0.01,-0.01,0.0)
-            # elif InputHandler.intent == 'Right':
-            #     body.acceleration = (0.01,0.01,0.0)
-            # else:
-            #     body.acceleration = (0,0,0)
             elif random.randint(0,50) == 0:
                 body.acceleration = (
                     random.randint(0,100)/10000 - 0.0050,
                     random.randint(0,100)/10000 - 0.0050,
                     0)
-
-            # if pos.position[0] < 0 or pos.position[0] > 20:
-            #     body.velocity = (-body.velocity[0],0,0)
-            #     body.acceleration = (
-            #         -body.acceleration[0],
-            #         body.acceleration[1],
-            #         body.acceleration[2])
-
-            # if pos.position[1] < 0 or pos.position[1] > 20:
-            #     body.velocity = (0,-body.velocity[1],0)
-            #     body.acceleration = (
-            #         body.acceleration[0],
-            #         -body.acceleration[1],
-            #         body.acceleration[2])
-            
 
