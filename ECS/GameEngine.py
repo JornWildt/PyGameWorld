@@ -17,10 +17,6 @@ class GameEngine:
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    self.game_environment.message_bus.publish('key_down', event)
-                elif event.type == pygame.KEYUP:
-                    self.game_environment.message_bus.publish('key_up', event)
 
             self.game_environment.scene.start_frame()
 

@@ -9,7 +9,6 @@ from ECS.Entity import Entity
 from ECS.MessageBus import MessageBus
 from SimpleComponents.NameComponent import NameComponent
 from Physics.PhysicsSystem import PhysicsSystem
-from Physics.RandomMovementSystem import RandomMovementSystem
 from Physics.BallMovementSystem import BallMovementSystem
 from Physics.CollisionDetectionSystem import CollisionDetectionSystem
 from Rendering.DisplaySystem import DisplaySystem
@@ -59,13 +58,6 @@ ballFrames = list(zip(ballImages, [100] * len(ballImages)))
 ballAnim = ExtPygAnimation(settings, ballFrames)
 ballAnim.play()
 
-playerImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Player.png", rows=1, cols=2, rects=[])
-playerFrames = list(zip(playerImages, [100] * len(playerImages)))
-playerAnim = ExtPygAnimation(settings, playerFrames, (1,1,2))
-#playerAnim = pyganim.PygAnimation(playerFrames)
-playerAnim.play()
-
-scene = Scene(settings)
 scene_sprites = {
     'floor': floor1,
     'floor_wall': floor_sprites.get('floor_wall'),
@@ -73,9 +65,23 @@ scene_sprites = {
     'box': box,
     'barrel': stub,
     'ghost': ghostAnim,
-    'ball': ballAnim,
-    'player': playerAnim
+    'ball': ballAnim
 }
+
+playerAnimations = []
+playerSpritesheet =  SpriteSheet("OriginalPixelArt/JW/Player.png")
+for d in range(0,8):
+    playerImages = []
+    for f in range(0,1):
+        image = playerSpritesheet.image_at((f*128,d*96,128,96))
+        playerImages.append(image)
+    playerFrames = list(zip(playerImages, [100] * len(playerImages)))
+    playerAnim = ExtPygAnimation(settings, playerFrames, (1,1,2))
+    playerAnim.play()
+    playerAnimations.append(playerAnim)
+    scene_sprites['player_' + str(d)] = playerAnim
+
+scene = Scene(settings)
 
 SceneBuilder.build_scene1(scene, scene_sprites)
 
@@ -86,7 +92,6 @@ message_bus = MessageBus()
 systems = SystemsRepository()
 systems.add(PhysicsSystem())
 systems.add(CollisionDetectionSystem())
-systems.add(RandomMovementSystem())
 systems.add(BallMovementSystem(message_bus))
 systems.add(PlayerMovementSystem(message_bus))
 # Display registered last! Ensures other systems can register as displayable for rendering

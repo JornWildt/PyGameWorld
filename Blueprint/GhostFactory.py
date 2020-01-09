@@ -2,7 +2,6 @@
 from SimpleComponents.NameComponent import NameComponent
 from Physics.BodyComponent import BodyComponent
 from Physics.PhysicsComponent import PhysicsComponent
-from Physics.RandomMovementComponent import RandomMovementComponent
 from Physics.BallMovementComponent import BallMovementComponent
 from Rendering.SpriteComponent import SpriteComponent
 from .PlayerMovementComponent import PlayerMovementComponent
@@ -42,6 +41,6 @@ class GhostFactory:
             BodyComponent((x,y,1), (0.9,0.9,2.9)),
             PhysicsComponent((0,0,0), (0, 0, 0)),
             PlayerMovementComponent(),
-            SpriteComponent('player')
+            SpriteComponent('player_3')
         ])
         return player

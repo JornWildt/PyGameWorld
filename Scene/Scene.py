@@ -12,7 +12,7 @@ class Scene:
 
         self.width = len(scene_src_array[0])
         self.height = len(scene_src_array)
-        self.depth = 5
+        self.depth = 4
         self.tile_map = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
 
         floor_sprite = sprites['floor']
