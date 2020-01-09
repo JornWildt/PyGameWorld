@@ -4,7 +4,7 @@
 XXXXXXXXXXXX
 x..........X
 x..........X
-XXXX...XXXXX
+x......XXXXX
 x..........X
 x.....B....X
 x..........X
@@ -18,6 +18,12 @@ x...b....b.X
 x........b.X
 x..........X
 xxxxxxxxxxxx
+'''
+
+        scene_src_x = '''
+XXX
+B.X
+BBX
 '''
 
         scene.load_scene_from_string(scene_src, sprites)

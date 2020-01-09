@@ -12,7 +12,7 @@ class Scene:
 
         self.width = len(scene_src_array[0])
         self.height = len(scene_src_array)
-        self.depth = 4
+        self.depth = 3
         self.tile_map = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
 
         floor_sprite = sprites['floor']
@@ -61,12 +61,19 @@ class Scene:
 
 
     def register_item(self, pos, size_box, sprite):
-        x0 = int(pos[0])
-        x1 = int(pos[0]+size_box[0])+1
-        y0 = int(pos[1])
-        y1 = int(pos[1]+size_box[1])+1
+        x0 = int(pos[0] + 0.25)
+        x1 = int(x0 + size_box[0])+1
+        y0 = int(pos[1] + 0.25)
+        y1 = int(y0 + size_box[1])+1
         z0 = int(pos[2])
-        z1 = int(pos[2]+size_box[2])+1
+        z1 = int(z0 + size_box[2])+1
+
+        # x0 = int(pos[0])
+        # x1 = int(pos[0]+size_box[0])+1
+        # y0 = int(pos[1])
+        # y1 = int(pos[1]+size_box[1])+1
+        # z0 = int(pos[2])
+        # z1 = int(pos[2]+size_box[2])+1
         for x in range(x0,x1):
             for y in range(y0,y1):
                 for z in range(z0,z1):

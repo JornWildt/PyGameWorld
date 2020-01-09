@@ -66,6 +66,10 @@ class PlayerMovementSystem:
                 vector[0],
                 vector[1],
                 0)
+
+            if pygame.key.get_pressed()[pygame.K_SPACE]:
+                phys.velocity = (0,0,0)
+                body.position = (1,1,1)
             
             if direction != None:
                 self.last_direction = direction

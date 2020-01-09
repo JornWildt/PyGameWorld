@@ -68,11 +68,16 @@ scene_sprites = {
     'ball': ballAnim
 }
 
+pillar_sprites = SpriteSheet("OriginalPixelArt/JW/1x1Pilar3D.png")
+pillar_sprites.define("pillar", (0,0,64,64))
+pillar = pillar_sprites.get('pillar')
+
 playerAnimations = []
 playerSpritesheet =  SpriteSheet("OriginalPixelArt/JW/Player.png")
 for d in range(0,8):
     playerImages = []
     for f in range(0,1):
+        #image = pillar
         image = playerSpritesheet.image_at((f*128,d*96,128,96))
         playerImages.append(image)
     playerFrames = list(zip(playerImages, [100] * len(playerImages)))
@@ -112,8 +117,8 @@ game = GameEngine(settings, game_environment)
 #entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
 
 entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
-entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
-entities.add_entity(GhostFactory.build_a_player('Mum', 10,4))
+#entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
+entities.add_entity(GhostFactory.build_a_player('Mum', 1,1))
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),

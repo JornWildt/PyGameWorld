@@ -38,9 +38,9 @@ class GhostFactory:
     def build_a_player(self, name, x,y):
         player = Entity([
             NameComponent(name),
-            BodyComponent((x,y,1), (0.9,0.9,2.9)),
+            BodyComponent((x,y,1), (0.5,0.5,2)),
             PhysicsComponent((0,0,0), (0, 0, 0)),
             PlayerMovementComponent(),
-            SpriteComponent('player_3')
+            SpriteComponent('player_3', (0.5, 0.5, 1.0))
         ])
         return player

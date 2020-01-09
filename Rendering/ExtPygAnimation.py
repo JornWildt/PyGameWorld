@@ -19,8 +19,8 @@ class ExtPygAnimation:
                         xpos = (x+y) * xmult
                         ypos = (y-x) * ymult + (size_box[2]-z-1) * zmult
                         sub_image = pygame.Surface((64,64), pygame.SRCALPHA)
-                        #sub_image.fill((128,0,0,128))
-                        sub_image.blit(frame[0], (0,0), (xpos,ypos,64,64))
+                        # sub_image.fill((128,0,0,128))
+                        sub_image.blit(frame[0], (0,0), (xpos,ypos,64,48))
                         sub_frames.append((sub_image,frame[1]))
                     animation = pyganim.PygAnimation(sub_frames)
                     animation.play()
