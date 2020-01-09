@@ -113,7 +113,7 @@ game = GameEngine(settings, game_environment)
 
 entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
 entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
-entities.add_entity(GhostFactory.build_a_player('Mum', 2,4))
+entities.add_entity(GhostFactory.build_a_player('Mum', 10,4))
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),
