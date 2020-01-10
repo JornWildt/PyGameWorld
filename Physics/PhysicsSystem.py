@@ -4,9 +4,14 @@ from .BodyComponent import BodyComponent
 from Rendering.SpriteComponent import SpriteComponent
 
 class PhysicsSystem:
+    def __init__(self):
+        pass
+
+
     def update(self, game_environment):
 
         # Use the scene as a 3D hashmap for item lookup
+        # FIXME: not a perfect place for this!
         for (body, sprite) in game_environment.entities_repository.get_components_of_types(BodyComponent, SpriteComponent):
             game_environment.scene.register_item(body.position, body.size, game_environment.sprites[sprite.sprite_id])
 

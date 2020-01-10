@@ -10,6 +10,7 @@ from ECS.MessageBus import MessageBus
 from SimpleComponents.NameComponent import NameComponent
 from Physics.PhysicsSystem import PhysicsSystem
 from Physics.BallMovementSystem import BallMovementSystem
+from Physics.CollisionMap import CollisionMap
 from Physics.CollisionDetectionSystem import CollisionDetectionSystem
 from Rendering.DisplaySystem import DisplaySystem
 from Rendering.DisplayComponent import DisplayComponent
@@ -78,7 +79,7 @@ for d in range(0,8):
     playerImages = []
     for f in range(0,1):
         #image = pillar
-        image = playerSpritesheet.image_at((f*128,d*96,128,96))
+        image = playerSpritesheet.image_at((f*64,d*96,64,96))
         playerImages.append(image)
     playerFrames = list(zip(playerImages, [100] * len(playerImages)))
     playerAnim = ExtPygAnimation(settings, playerFrames, (1,1,2))
@@ -87,10 +88,9 @@ for d in range(0,8):
     scene_sprites['player_' + str(d)] = playerAnim
 
 scene = Scene(settings)
-
 SceneBuilder.build_scene1(scene, scene_sprites)
 
-clock = pygame.time.Clock()
+collision_map = CollisionMap(settings, scene)
 
 message_bus = MessageBus()
 
@@ -110,15 +110,16 @@ game_environment.entities_repository = entities
 game_environment.sprites = scene_sprites
 game_environment.scene = scene
 game_environment.screen = screen
+game_environment.collision_map = collision_map
 game_environment.message_bus = message_bus
 
 game = GameEngine(settings, game_environment)
 
 #entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
 
-entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
+#entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
 #entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
-entities.add_entity(GhostFactory.build_a_player('Mum', 1,1))
+entities.add_entity(GhostFactory.build_a_player('Mum', 2,2))
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),

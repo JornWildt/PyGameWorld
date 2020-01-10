@@ -42,12 +42,12 @@ class PlayerMovementSystem:
     def update(self, game_environment):
         (vector, speed, direction) = PlayerMovementSystem.get_current_input_vector()
 
-        # Go through all player components (only one, seems like a bit of overkill ...)
+        # Go through all player components (these is only one, so it seems like a bit of overkill ...)
         for (player, body, phys, sprite) in game_environment.entities_repository.get_components_of_types(PlayerMovementComponent, BodyComponent, PhysicsComponent, SpriteComponent):
 
             if direction != None and player.hit_tile != None:
                 # Directional vector towards the hit tile
-                tile_vector = (player.hit_tile.pos[0] - body.position[0], player.hit_tile.pos[1] - body.position[1])
+                tile_vector = (player.hit_tile.position[0] - body.position[0], player.hit_tile.position[1] - body.position[1])
                 
                 # Cross-product of intended movement and tile direction indicates their relationship
                 c = vector[0] * tile_vector[1] - vector[1] * tile_vector[0]

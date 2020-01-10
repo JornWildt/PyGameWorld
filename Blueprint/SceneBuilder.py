@@ -1,7 +1,7 @@
 ﻿class SceneBuilder:
     def build_scene1(scene, sprites):
         scene_src = '''
-XXXXXXXXXXXX
+xXXXXXXXXXXX
 x..........X
 x..........X
 x......XXXXX

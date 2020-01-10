@@ -26,7 +26,7 @@ class GhostFactory:
     def build_a_ball(self, name, x,y):
         ball = Entity([
             NameComponent(name),
-            BodyComponent((x,y,1), (1,1,1)),
+            BodyComponent((x,y,1), (0.99,0.99,0.99)),
             PhysicsComponent((0,0,0), (0.001, 0.001, 0)),
             # PhysicsComponent((0,0,0), (0,0,0)), #(0.001, 0.001, 0.001)),
             BallMovementComponent(),
@@ -39,8 +39,8 @@ class GhostFactory:
         player = Entity([
             NameComponent(name),
             BodyComponent((x,y,1), (0.5,0.5,2)),
-            PhysicsComponent((0,0,0), (0, 0, 0)),
+            PhysicsComponent((0,0,0), (0,0,0)),
             PlayerMovementComponent(),
-            SpriteComponent('player_3', (0.5, 0.5, 1.0))
+            SpriteComponent('player_3')
         ])
         return player

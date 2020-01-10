@@ -3,7 +3,7 @@
 class Tile():
 
     def __init__(self, pos, tile_type, image):
-        self.pos = pos
+        self.position = pos
         self.tile_type = tile_type
         self.image = image
 

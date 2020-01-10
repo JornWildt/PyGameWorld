@@ -13,6 +13,7 @@ class Scene:
         self.width = len(scene_src_array[0])
         self.height = len(scene_src_array)
         self.depth = 3
+        self.size = (self.width, self.height, self.depth)
         self.tile_map = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
 
         floor_sprite = sprites['floor']
@@ -53,27 +54,25 @@ class Scene:
                     elif scene_src_array[y][x] == '#' and z != 2:
                         self.tile_map[z][x][y] = Tile((x,y,z), TileType.Wall, wall_sprite)
 
-        return scene_src
-
 
     def start_frame(self):
         self.items_index = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
 
 
     def register_item(self, pos, size_box, sprite):
-        x0 = int(pos[0] + 0.25)
-        x1 = int(x0 + size_box[0])+1
-        y0 = int(pos[1] + 0.25)
-        y1 = int(y0 + size_box[1])+1
-        z0 = int(pos[2])
-        z1 = int(z0 + size_box[2])+1
+        # x0 = int(pos[0] - size_box[0]/2)
+        # x1 = int(x0 + size_box[0]) + 1
+        # y0 = int(pos[1] - size_box[1]/2)
+        # y1 = int(y0 + size_box[1]) + 1
+        # z0 = int(pos[2] - size_box[2]/2)
+        # z1 = int(z0 + size_box[2]) + 1
 
-        # x0 = int(pos[0])
-        # x1 = int(pos[0]+size_box[0])+1
-        # y0 = int(pos[1])
-        # y1 = int(pos[1]+size_box[1])+1
-        # z0 = int(pos[2])
-        # z1 = int(pos[2]+size_box[2])+1
+        x0 = int(pos[0] + 0.5)
+        x1 = int(x0+size_box[0] + 0.5)
+        y0 = int(pos[1] + 0.5)
+        y1 = int(y0+size_box[1] + 0.5)
+        z0 = int(pos[2])
+        z1 = int(pos[2]+size_box[2] + 0.5)
         for x in range(x0,x1):
             for y in range(y0,y1):
                 for z in range(z0,z1):
@@ -95,27 +94,31 @@ class Scene:
         ymult = self.settings.map_tile_pixels/4
         zmult = self.settings.map_tile_pixels/2
 
-        xoffset = 50
-        yoffset = self.height * ymult + self.width * ymult
+        xoffset = 100
+        yoffset = self.width * ymult + self.depth * zmult
 
         for z in range(self.depth):
             for x in range(self.width-1,-1,-1):
                 for y in range(self.height):
                     tile = self.tile_map[z][x][y]
                     if tile != None:
-                        xpos = (x+y) * xmult + xoffset
-                        ypos = (y-x) * ymult - z * zmult + yoffset
+                        xpos = (x+y) * xmult + xoffset - 32
+                        ypos = (y-x) * ymult - z * zmult + yoffset - 48
                         if tile.image != None:
                             screen.blit(tile.image, (xpos,ypos))
 
                     items = self.items_index[z][x][y]
                     for item in items if items != None else []:
-                        ix = item.pos[0] + item.offset[0]
-                        iy = item.pos[1] + item.offset[1]
+                        ix = item.pos[0] + item.offset[0] # - 0.25
+                        iy = item.pos[1] + item.offset[1] # - 0.25
                         iz = item.pos[2] + item.offset[2]
-                        xpos = (ix+iy) * xmult + xoffset
-                        ypos = (iy-ix) * ymult - iz * zmult + yoffset
+                        xpos = (ix+iy) * xmult + xoffset - 32
+                        ypos = (iy-ix) * ymult - iz * zmult + yoffset - 48
+                        pygame.draw.rect(screen, (0,128,0,128), (xpos,ypos,64,8), 1)
                         item.sprite.blit(screen, (xpos,ypos), item.offset)
+
+        # Indicate (0,0,0) position with a 3x3 square
+        pygame.draw.rect(screen, (0,128,0,128), (xoffset-1,yoffset-1,3,3), 1)
 
 
 class SceneItem:

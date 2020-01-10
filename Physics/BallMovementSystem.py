@@ -22,16 +22,16 @@ class BallMovementSystem:
             xdir = random.randint(0,1)*2-1
             ydir = random.randint(0,1)*2-1
 
-            if (tile.pos[0] < pos.position[0]):
+            if (tile.position[0] < pos.position[0]):
                 xdir = -1
                 #ydir = 1
-            elif (tile.pos[0] > pos.position[0]):
+            elif (tile.position[0] > pos.position[0]):
                 xdir = -1
                 #ydir = 1
-            elif (tile.pos[1] < pos.position[1]):
+            elif (tile.position[1] < pos.position[1]):
                 #xdir = 1
                 ydir = -1
-            elif (tile.pos[1] > pos.position[1]):
+            elif (tile.position[1] > pos.position[1]):
                 #xdir = 1
                 ydir = -1
 
