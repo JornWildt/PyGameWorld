@@ -33,54 +33,6 @@ class Scene:
 
 
 
-    def load_scene_from_string(self, scene_src, sprites):
-        scene_src_array = scene_src.split()
-
-        self.width = len(scene_src_array[0])
-        self.height = len(scene_src_array)
-        self.depth = 3
-        self.size = (self.width, self.height, self.depth)
-        self.tile_map = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
-
-        floor_sprite = sprites['floor']
-        floor_wall_sprite = sprites['floor_wall']
-        wall_sprite = sprites['wall']
-        box_sprite = sprites['box']
-        barrel_sprite = sprites['barrel']
-        
-        for x in range(self.width):
-            for y in range(self.height):
-                if scene_src_array[y][x] == 'x' or scene_src_array[y][x] == 'X':
-                    self.tile_map[0][x][y] = Tile((x,y,0), TileType.Wall, floor_wall_sprite)
-                elif scene_src_array[y][x] == 'B':
-                    self.tile_map[0][x][y] = Tile((x,y,0), TileType.Wall, floor_sprite)
-                elif scene_src_array[y][x] == 'b':
-                    self.tile_map[0][x][y] = Tile((x,y,0), TileType.Wall, floor_sprite)
-                else:
-                    self.tile_map[0][x][y] = Tile((x,y,0), TileType.Floor, floor_sprite)
-
-        for x in range(self.width):
-            for y in range(self.height):
-                if scene_src_array[y][x] == 'X':
-                    self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, wall_sprite)
-                elif scene_src_array[y][x] == 'x' or scene_src_array[y][x] == '#':
-                    self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, None)
-                elif scene_src_array[y][x] == 'B':
-                    self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, box_sprite)
-                elif scene_src_array[y][x] == 'b':
-                    self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, barrel_sprite)
-
-        for z in range(2, self.depth):
-            for x in range(self.width):
-                for y in range(self.height):
-                    if scene_src_array[y][x] == 'X':
-                        self.tile_map[z][x][y] = Tile((x,y,z), TileType.Wall, wall_sprite)
-                    if scene_src_array[y][x] == '#' and z == 2:
-                        self.tile_map[z][x][y] = Tile((x,y,z), TileType.Wall, None)
-                    elif scene_src_array[y][x] == '#' and z != 2:
-                        self.tile_map[z][x][y] = Tile((x,y,z), TileType.Wall, wall_sprite)
-
-
     def start_frame(self):
         self.items_index = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
 
@@ -116,37 +68,45 @@ class Scene:
         screen = game_environment.screen
         center = game_environment.player_entity.get_component_of_type(BodyComponent).position
 
-        xoffset = self.window_x - (center[0]+center[1]) * self.xmult
-        yoffset = self.window_y -(center[1]-center[0]) * self.ymult + center[2] * self.zmult
+        # Subtract 32 and 48 to get center of cube at (0,0,0) right at screen position 0,0 
+        # (since sprites are offset at their top left corner)
+        xoffset = self.window_x - (center[0]+center[1]) * self.xmult - 32
+        yoffset = self.window_y -(center[1]-center[0]) * self.ymult + center[2] * self.zmult - 48
 
         for z in range(max(0,int(center[2]-self.zviewsize_2)), min(int(center[2]+self.zviewsize_2),self.depth)):
-            for xx in range(self.xviewsize-1,-1,-1):                
-                for yy in range(self.yviewsize):
-                    # xxyy = xx + yy
-                    if xx + yy > self.corner_size_1 and xx + yy < self.corner_size_3 and xx - yy > -self.corner_size_2 and yy - xx > -self.corner_size_2:
-                        x = int(center[0]) - self.xviewsize_2 + xx
-                        y = int(center[1]) - self.yviewsize_2 + yy
-                        if x >= 0 and x < self.width and y >= 0 and y < self.height:
-                            tile = self.tile_map[z][x][y]
-                            if tile != None:
-                                xpos = (x+y) * self.xmult + xoffset - 32
-                                ypos = (y-x) * self.ymult - z * self.zmult + yoffset - 48
-                                if tile.image != None:
-                                    screen.blit(tile.image, (xpos,ypos))
+            tile_map_z = self.tile_map[z]
+            for xx in range(self.xviewsize-1,-1,-1):
+                x = int(center[0]) - self.xviewsize_2 + xx
+                if x >= 0 and x < self.width:
+                    tile_map_x = tile_map_z[x]
+                    for yy in range(self.yviewsize):
+                        if xx + yy > self.corner_size_1 and xx + yy < self.corner_size_3 and xx - yy > -self.corner_size_2 and yy - xx > -self.corner_size_2:
+                            y = int(center[1]) - self.yviewsize_2 + yy
+                            if y >= 0 and y < self.height:
+                                tile = tile_map_x[y]
+                                if tile != None:
+                                    xpos = (x+y) * self.xmult + xoffset# - 32
+                                    ypos = (y-x) * self.ymult - z * self.zmult + yoffset# - 48
+                                    if tile.image != None:
+                                        screen.blit(tile.image, (xpos,ypos))
 
-                            items = self.items_index[z][x][y]
-                            for item in items if items != None else []:
-                                ix = item.pos[0] + item.offset[0]
-                                iy = item.pos[1] + item.offset[1]
-                                iz = item.pos[2] + item.offset[2]
-                                xpos = (ix+iy) * self.xmult + xoffset - 32
-                                ypos = (iy-ix) * self.ymult - iz * self.zmult + yoffset - 48
-                                pygame.draw.rect(screen, (0,128,0,128), (xpos,ypos,64,8), 1)
-                                item.sprite.blit(screen, (xpos,ypos), item.offset)
+                                items = self.items_index[z][x][y]
+                                for item in items if items != None else []:
+                                    # Items are supposed to be slices into cubes/tiles matching the map tiles, and
+                                    # each item is registered at a cube/tile location together with that cube's
+                                    # offset relative to the item's origin position.
+                                    ix = item.pos[0] + item.offset[0]
+                                    iy = item.pos[1] + item.offset[1]
+                                    iz = item.pos[2] + item.offset[2]
+                                    xpos = (ix+iy) * self.xmult + xoffset# - 32
+                                    ypos = (iy-ix) * self.ymult - iz * self.zmult + yoffset# - 48
+                                    item.sprite.blit(screen, (xpos,ypos), item.offset)
 
-        # Indicate (0,0,0) position with a 3x3 square
-        pygame.draw.rect(screen, (0,128,0,128), (xoffset-1,yoffset-1,3,3), 1)
-        pygame.draw.rect(screen, (0,128,0,128), (500-1,350-1,3,3), 1)
+        # Indicate tile (0,0,0) position with a 3x3 square
+        pygame.draw.rect(screen, (0,128,0,128), (xoffset-1+32,yoffset+48-1,3,3), 1)
+
+        # Indicate window (0,0,0) position with a 3x3 square
+        pygame.draw.rect(screen, (0,128,0,128), (self.window_x-1,self.window_y-1,3,3), 1)
 
 
 

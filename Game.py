@@ -15,7 +15,7 @@ from Physics.CollisionDetectionSystem import CollisionDetectionSystem
 from Rendering.DisplaySystem import DisplaySystem
 from Rendering.DisplayComponent import DisplayComponent
 from Blueprint.GhostFactory import GhostFactory
-from Blueprint.SceneBuilder import SceneBuilder
+from Blueprint.Scene_1_Builder import Scene_1_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Rendering.SpriteSheet import SpriteSheet
 from Rendering.ExtPygAnimation import ExtPygAnimation
@@ -96,7 +96,7 @@ entities = EntityRepository()
 player_entity = entities.add_entity(GhostFactory.build_a_player('Mum', 2,2))
 
 scene = Scene(settings)
-SceneBuilder.build_scene1(scene, scene_sprites)
+Scene_1_Builder(scene, scene_sprites).build_scene()
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),
