@@ -34,6 +34,7 @@ class Scene:
 
 
     def start_frame(self):
+        #pass
         self.items_index = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
 
 
@@ -74,10 +75,12 @@ class Scene:
         yoffset = self.window_y -(center[1]-center[0]) * self.ymult + center[2] * self.zmult - 48
 
         for z in range(max(0,int(center[2]-self.zviewsize_2)), min(int(center[2]+self.zviewsize_2),self.depth)):
+            # Take a reference to the z-index here (avoid looking it up too many times)
             tile_map_z = self.tile_map[z]
             for xx in range(self.xviewsize-1,-1,-1):
                 x = int(center[0]) - self.xviewsize_2 + xx
                 if x >= 0 and x < self.width:
+                    # Take a reference to the z,x index here
                     tile_map_x = tile_map_z[x]
                     for yy in range(self.yviewsize):
                         if xx + yy > self.corner_size_1 and xx + yy < self.corner_size_3 and xx - yy > -self.corner_size_2 and yy - xx > -self.corner_size_2:

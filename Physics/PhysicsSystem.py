@@ -10,11 +10,6 @@ class PhysicsSystem:
 
     def update(self, game_environment):
 
-        # Use the scene as a 3D hashmap for item lookup
-        # FIXME: not a perfect place for this!
-        for (body, sprite) in game_environment.entities_repository.get_components_of_types(BodyComponent, SpriteComponent):
-            game_environment.scene.register_item(body.position, body.size, game_environment.sprites[sprite.sprite_id])
-
         for (body,phys) in game_environment.entities_repository.get_components_of_types(BodyComponent, PhysicsComponent):
 
             phys.previous_position = body.position
