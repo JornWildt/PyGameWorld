@@ -16,6 +16,8 @@
                 self.components_index[component_type] = set()
             self.components_index[component_type].add(entity.components[component_type])
 
+        return entity
+
 
     def get_entity(self, id):
         return self.entities_index[id]

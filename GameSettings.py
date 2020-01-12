@@ -9,7 +9,7 @@ class GameSettings:
         self.map_viewport_ytiles = 20
         self.map_tile_pixels = 64
 
-        self.window_width = 1000
-        self.window_height = 700
+        self.window_width = 800
+        self.window_height = 600
 
-        self.FPS = 30
+        self.FPS = 60

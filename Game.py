@@ -87,8 +87,24 @@ for d in range(0,8):
     playerAnimations.append(playerAnim)
     scene_sprites['player_' + str(d)] = playerAnim
 
+entities = EntityRepository()
+
+#entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
+
+#entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
+#entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
+player_entity = entities.add_entity(GhostFactory.build_a_player('Mum', 2,2))
+
 scene = Scene(settings)
 SceneBuilder.build_scene1(scene, scene_sprites)
+
+sceneDisplay = Entity([
+    NameComponent('Main scene'),
+    DisplayComponent(scene)
+])
+entities.add_entity(sceneDisplay)
+
+
 
 collision_map = CollisionMap(settings, scene)
 
@@ -102,9 +118,8 @@ systems.add(PlayerMovementSystem(message_bus))
 # Display registered last! Ensures other systems can register as displayable for rendering
 systems.add(DisplaySystem())
 
-entities = EntityRepository()
-
 game_environment = GameEnvironment()
+game_environment.player_entity = player_entity
 game_environment.systems_repository = systems
 game_environment.entities_repository = entities
 game_environment.sprites = scene_sprites
@@ -114,17 +129,5 @@ game_environment.collision_map = collision_map
 game_environment.message_bus = message_bus
 
 game = GameEngine(settings, game_environment)
-
-#entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
-
-#entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
-#entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
-entities.add_entity(GhostFactory.build_a_player('Mum', 2,2))
-
-sceneDisplay = Entity([
-    NameComponent('Main scene'),
-    DisplayComponent(scene)
-])
-entities.add_entity(sceneDisplay)
 
 game.run_game_loop()

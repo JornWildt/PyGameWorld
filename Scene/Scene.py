@@ -1,11 +1,37 @@
 ﻿import pygame as pygame
 from .Tile import Tile
 from .TileType import *
+from Physics.BodyComponent import BodyComponent
 
 class Scene:
 
     def __init__(self, settings):
         self.settings = settings
+
+        self.xmult = int(self.settings.map_tile_pixels/2)
+        self.ymult = int(self.settings.map_tile_pixels/4)
+        self.zmult = int(self.settings.map_tile_pixels/2)
+
+        self.xviewsize = 40
+        self.yviewsize = 40
+        self.zviewsize = 32
+
+        self.xviewsize_2 = int(self.xviewsize/2)
+        self.yviewsize_2 = int(self.yviewsize/2)
+        self.zviewsize_2 = int(self.zviewsize/2)
+
+        # These constants define size which is cut out of the corners
+        # Top-left
+        self.corner_size_1 = int((self.xviewsize + self.yviewsize)/4) - 1
+        # Top-right and bottom-left
+        self.corner_size_2 = int((self.xviewsize + self.yviewsize)/2) - int(self.corner_size_1)/2
+        # Bottom-right
+        self.corner_size_3 = self.xviewsize + self.yviewsize - int((self.xviewsize + self.yviewsize)/4) - 1
+
+        self.window_x = int(self.settings.window_width/2)
+        self.window_y = int(self.settings.window_height/2)
+
+
 
     def load_scene_from_string(self, scene_src, sprites):
         scene_src_array = scene_src.split()
@@ -83,42 +109,45 @@ class Scene:
 
 
     def get_tile_at(self, pos):
-        x = int(pos[0])
-        y = int(pos[1])
-        z = int(pos[2])
-        return self.tile_map[z][x][y]
+        return self.tile_map[int(pos[2])][int(pos[0])][int(pos[1])]
 
 
-    def render(self, screen):
-        xmult = self.settings.map_tile_pixels/2
-        ymult = self.settings.map_tile_pixels/4
-        zmult = self.settings.map_tile_pixels/2
+    def render(self, game_environment):
+        screen = game_environment.screen
+        center = game_environment.player_entity.get_component_of_type(BodyComponent).position
 
-        xoffset = 100
-        yoffset = self.width * ymult + self.depth * zmult
+        xoffset = self.window_x - (center[0]+center[1]) * self.xmult
+        yoffset = self.window_y -(center[1]-center[0]) * self.ymult + center[2] * self.zmult
 
-        for z in range(self.depth):
-            for x in range(self.width-1,-1,-1):
-                for y in range(self.height):
-                    tile = self.tile_map[z][x][y]
-                    if tile != None:
-                        xpos = (x+y) * xmult + xoffset - 32
-                        ypos = (y-x) * ymult - z * zmult + yoffset - 48
-                        if tile.image != None:
-                            screen.blit(tile.image, (xpos,ypos))
+        for z in range(max(0,int(center[2]-self.zviewsize_2)), min(int(center[2]+self.zviewsize_2),self.depth)):
+            for xx in range(self.xviewsize-1,-1,-1):                
+                for yy in range(self.yviewsize):
+                    # xxyy = xx + yy
+                    if xx + yy > self.corner_size_1 and xx + yy < self.corner_size_3 and xx - yy > -self.corner_size_2 and yy - xx > -self.corner_size_2:
+                        x = int(center[0]) - self.xviewsize_2 + xx
+                        y = int(center[1]) - self.yviewsize_2 + yy
+                        if x >= 0 and x < self.width and y >= 0 and y < self.height:
+                            tile = self.tile_map[z][x][y]
+                            if tile != None:
+                                xpos = (x+y) * self.xmult + xoffset - 32
+                                ypos = (y-x) * self.ymult - z * self.zmult + yoffset - 48
+                                if tile.image != None:
+                                    screen.blit(tile.image, (xpos,ypos))
 
-                    items = self.items_index[z][x][y]
-                    for item in items if items != None else []:
-                        ix = item.pos[0] + item.offset[0] # - 0.25
-                        iy = item.pos[1] + item.offset[1] # - 0.25
-                        iz = item.pos[2] + item.offset[2]
-                        xpos = (ix+iy) * xmult + xoffset - 32
-                        ypos = (iy-ix) * ymult - iz * zmult + yoffset - 48
-                        pygame.draw.rect(screen, (0,128,0,128), (xpos,ypos,64,8), 1)
-                        item.sprite.blit(screen, (xpos,ypos), item.offset)
+                            items = self.items_index[z][x][y]
+                            for item in items if items != None else []:
+                                ix = item.pos[0] + item.offset[0]
+                                iy = item.pos[1] + item.offset[1]
+                                iz = item.pos[2] + item.offset[2]
+                                xpos = (ix+iy) * self.xmult + xoffset - 32
+                                ypos = (iy-ix) * self.ymult - iz * self.zmult + yoffset - 48
+                                pygame.draw.rect(screen, (0,128,0,128), (xpos,ypos,64,8), 1)
+                                item.sprite.blit(screen, (xpos,ypos), item.offset)
 
         # Indicate (0,0,0) position with a 3x3 square
         pygame.draw.rect(screen, (0,128,0,128), (xoffset-1,yoffset-1,3,3), 1)
+        pygame.draw.rect(screen, (0,128,0,128), (500-1,350-1,3,3), 1)
+
 
 
 class SceneItem:

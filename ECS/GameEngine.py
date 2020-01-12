@@ -1,5 +1,6 @@
 ﻿import pygame
 import sys
+from Utility import Texts
 
 class GameEngine:
     def __init__(self, settings, game_environment):
@@ -10,8 +11,13 @@ class GameEngine:
     def run_game_loop(self):
         
         clock = pygame.time.Clock()
+        frame_time = 0
 
         while True:
+            
+            # TODO: no need to clear whole screen!
+            self.game_environment.screen.fill((0,0,0))
+            
             # Event processing here, stuff the users does.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -24,8 +30,9 @@ class GameEngine:
                 self.game_environment.message_bus.dispatch_messages()
                 system.update(self.game_environment)
 
+            Texts.show_text(self.game_environment.screen, str(frame_time), (10,10))
             pygame.display.flip()
 
-            clock.tick(self.settings.FPS)
+            frame_time = clock.tick(self.settings.FPS)
 
 
