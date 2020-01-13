@@ -9,7 +9,7 @@ class SceneBuilder:
         self.symbol_map = {}
 
 
-    def define_tile(self, symbol, method):
+    def define_tile_builder(self, symbol, method):
         self.symbol_map[symbol] = method
 
 
@@ -26,16 +26,17 @@ class SceneBuilder:
         
         for x in range(self.scene.width):
             for y in range(self.scene.height):
-                symbol = scene_map_array[y][x*2]
-                if symbol != ' ':
-                    builder_method = self.symbol_map[symbol]
-                    builder_method(self, symbol, (x,y))
+                symbol1 = scene_map_array[y][x*2]
+                symbol2 = scene_map_array[y][x*2+1] if x*2+1 < len(scene_map_array[y]) else ' '
+                if symbol1 != ' ':
+                    builder_method = self.symbol_map[symbol1]
+                    builder_method(self, (symbol1, symbol2), (x,y))
 
         self.collision_map.load_from_scene(self.scene)
 
 
-    def place_location_event_trigger(self, pos, message_name, item):
-        self.collision_map.register_static_item(pos, (1,1,1), message_name, item)
+    def place_location_event_trigger(self, pos, message_name, message):
+        self.collision_map.register_static_item(pos, (1,1,1), message_name, message)
 
 
         

@@ -1,10 +1,7 @@
-﻿from Scene.Tile import Tile
-from Scene.TileType import *
-from Blueprint.Scene_1_Builder import Scene_1_Builder
-from .SceneBuilder import SceneBuilder
+﻿from .Scene_A_Builder import Scene_A_Builder
 
 
-class Scene_2_Builder(Scene_1_Builder):
+class Scene_A2_Builder(Scene_A_Builder):
     def __init__(self, game_environment):
         super().__init__(game_environment)
 
@@ -13,7 +10,7 @@ class Scene_2_Builder(Scene_1_Builder):
 X X X X X X
 x . . . . X
 x . . . . X
-x . . . . X
+x . . T1. X
 x x x x x X
 '''
 

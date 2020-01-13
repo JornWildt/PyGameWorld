@@ -15,16 +15,13 @@ from Physics.CollisionDetectionSystem import CollisionDetectionSystem
 from Rendering.DisplaySystem import DisplaySystem
 from Rendering.DisplayComponent import DisplayComponent
 from Blueprint.GhostFactory import GhostFactory
-from Blueprint.Scene_1_Builder import Scene_1_Builder
-from Blueprint.Scene_2_Builder import Scene_2_Builder
+from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
+from Blueprint.Scenes.Scene_A2_Builder import Scene_A2_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
+from Blueprint.GameEngine2 import GameEngine2
 from Rendering.SpriteSheet import SpriteSheet
 from Rendering.ExtPygAnimation import ExtPygAnimation
 from Scene.Scene import Scene
-
-
-def on_new_scene(game_environment, scene_name):
-    Scene_2_Builder(game_environment).build_scene()
 
 
 pygame.init()
@@ -127,7 +124,7 @@ game_environment.player_entity = player_entity
 game_environment.systems_repository = systems
 game_environment.entities_repository = entities
 
-Scene_1_Builder(game_environment).build_scene()
+Scene_A1_Builder(game_environment).build_scene()
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),
@@ -136,8 +133,7 @@ sceneDisplay = Entity([
 entities.add_entity(sceneDisplay)
 
 
-message_bus.subscribe('new_scene', on_new_scene)
+message_bus.subscribe('new_scene', GameEngine2.on_new_scene)
 
-game = GameEngine(settings, game_environment)
-
+game = GameEngine2(settings, game_environment)
 game.run_game_loop()
