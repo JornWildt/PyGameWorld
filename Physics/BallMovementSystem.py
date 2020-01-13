@@ -8,7 +8,7 @@ class BallMovementSystem:
         self.is_moving = False
         message_bus.subscribe('tile_collision', BallMovementSystem.on_tile_collision)
 
-    def on_tile_collision(p):
+    def on_tile_collision(game_environment, p):
         entity = p[0]
         tile = p[1]
         

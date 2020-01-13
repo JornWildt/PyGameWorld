@@ -1,9 +1,10 @@
 ﻿from collections import deque
 
 class MessageBus:
-    def __init__(self):
+    def __init__(self, game_environment):
         self.subscribers = {}
         self.queue = deque()
+        self.game_environment = game_environment
 
     def subscribe(self, name, subscriber):
         if not name in self.subscribers:
@@ -21,4 +22,4 @@ class MessageBus:
             (name, message) = self.queue.popleft()
             if name in self.subscribers:
                 for subscriber in self.subscribers[name]:
-                    subscriber(message)
+                    subscriber(self.game_environment, message)

@@ -1,13 +1,7 @@
-﻿import random
-from .PhysicsComponent import PhysicsComponent
+﻿from .PhysicsComponent import PhysicsComponent
 from .BodyComponent import BodyComponent
-from Rendering.SpriteComponent import SpriteComponent
 
 class PhysicsSystem:
-    def __init__(self):
-        pass
-
-
     def update(self, game_environment):
 
         for (body,phys) in game_environment.entities_repository.get_components_of_types(BodyComponent, PhysicsComponent):

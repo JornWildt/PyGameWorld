@@ -16,10 +16,16 @@ from Rendering.DisplaySystem import DisplaySystem
 from Rendering.DisplayComponent import DisplayComponent
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.Scene_1_Builder import Scene_1_Builder
+from Blueprint.Scene_2_Builder import Scene_2_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Rendering.SpriteSheet import SpriteSheet
 from Rendering.ExtPygAnimation import ExtPygAnimation
 from Scene.Scene import Scene
+
+
+def on_new_scene(game_environment, scene_name):
+    Scene_2_Builder(game_environment).build_scene()
+
 
 pygame.init()
 
@@ -59,6 +65,8 @@ ballFrames = list(zip(ballImages, [100] * len(ballImages)))
 ballAnim = ExtPygAnimation(settings, ballFrames)
 ballAnim.play()
 
+teleport_images = SpriteSheet("OriginalPixelArt/JW/Teleport3D.png")
+
 scene_sprites = {
     'floor': floor1,
     'floor_wall': floor_sprites.get('floor_wall'),
@@ -66,7 +74,8 @@ scene_sprites = {
     'box': box,
     'barrel': stub,
     'ghost': ghostAnim,
-    'ball': ballAnim
+    'ball': ballAnim,
+    'teleport': teleport_images.image_at((0,0,64,64))
 }
 
 pillar_sprites = SpriteSheet("OriginalPixelArt/JW/1x1Pilar3D.png")
@@ -95,8 +104,30 @@ entities = EntityRepository()
 #entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
 player_entity = entities.add_entity(GhostFactory.build_a_player('Mum', 2,2))
 
+
+game_environment = GameEnvironment()
+message_bus = MessageBus(game_environment)
+
+systems = SystemsRepository()
+systems.add(PhysicsSystem())
+systems.add(CollisionDetectionSystem())
+systems.add(BallMovementSystem(message_bus))
+systems.add(PlayerMovementSystem(message_bus))
+systems.add(DisplaySystem())
+
 scene = Scene(settings)
-Scene_1_Builder(scene, scene_sprites).build_scene()
+collision_map = CollisionMap(settings)
+
+game_environment.scene = scene
+game_environment.collision_map = collision_map
+game_environment.sprites = scene_sprites
+game_environment.message_bus = message_bus
+game_environment.screen = screen
+game_environment.player_entity = player_entity
+game_environment.systems_repository = systems
+game_environment.entities_repository = entities
+
+Scene_1_Builder(game_environment).build_scene()
 
 sceneDisplay = Entity([
     NameComponent('Main scene'),
@@ -105,28 +136,7 @@ sceneDisplay = Entity([
 entities.add_entity(sceneDisplay)
 
 
-
-collision_map = CollisionMap(settings, scene)
-
-message_bus = MessageBus()
-
-systems = SystemsRepository()
-systems.add(PhysicsSystem())
-systems.add(CollisionDetectionSystem())
-systems.add(BallMovementSystem(message_bus))
-systems.add(PlayerMovementSystem(message_bus))
-# Display registered last! Ensures other systems can register as displayable for rendering
-systems.add(DisplaySystem())
-
-game_environment = GameEnvironment()
-game_environment.player_entity = player_entity
-game_environment.systems_repository = systems
-game_environment.entities_repository = entities
-game_environment.sprites = scene_sprites
-game_environment.scene = scene
-game_environment.screen = screen
-game_environment.collision_map = collision_map
-game_environment.message_bus = message_bus
+message_bus.subscribe('new_scene', on_new_scene)
 
 game = GameEngine(settings, game_environment)
 

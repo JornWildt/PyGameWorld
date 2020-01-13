@@ -18,17 +18,17 @@ class CollisionDetectionSystem:
             y1 = min(int(body.position[1] + body.size[1] - 0.25) + 2, collision_map.size[1])
             z0 = 1 # int(body.position[2] - 0.25) - 1
             z1 = 2 # int(z0 + body.size[2]) + 2
-            item = None
+            found = False
             # Only look for a colliding item until a item is found, then skip the rest for the current body
-            for x in range(x0,x1) if item == None else []:
-                for y in range(y0,y1) if item == None else []:
-                    for z in range(z0,z1) if item == None else []:
-                        item = game_environment.collision_map.get_item_at((x,y,z))
-                        if item != None:
-                            box_x = body.position[0] - body.size[0]/2
-                            box_y = body.position[1] - body.size[1]/2
+            for x in range(x0,x1) if  not found else []:
+                for y in range(y0,y1) if not found else []:
+                    for z in range(z0,z1) if not found else []:
+                        box_x = body.position[0] - body.size[0]/2
+                        box_y = body.position[1] - body.size[1]/2
+                        items = game_environment.collision_map.get_items_at((x,y,z))
+                        for item in items:
+                            # TODO: size should be taken from item
                             if box_x <= item.position[0]+0.5 and box_x + body.size[0] >= item.position[0]-0.5 and box_y <= item.position[1]+0.5 and box_y + body.size[1] >= item.position[1]-0.5 and body.position[2] == item.position[2]:
-                                game_environment.message_bus.publish('tile_collision', (body.entity, item))
+                                game_environment.message_bus.publish(item.message_name, (body.entity, item.item))
+                                found = True
                                 break
-                            else:
-                                item = None

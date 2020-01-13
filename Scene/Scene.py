@@ -32,7 +32,20 @@ class Scene:
         self.window_y = int(self.settings.window_height/2)
 
 
+    def initialize(self, width, height, depth):
+        self.width = width
+        self.height = height
+        self.depth = depth
+        self.size = (self.width, self.height, self.depth)
+        # Tile map has optimized Z-first index
+        self.tile_map = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]
+        self.trigger_map = [[[None for z in range(self.depth)] for y in range(self.height)] for x in range(self.width)]
 
+
+    def place_cube(self, x,y,z, tile_type, sprite):
+        self.tile_map[z][x][y] = Tile((x,y,z), tile_type, sprite)
+
+    
     def start_frame(self):
         #pass
         self.items_index = [[[None for y in range(self.height)] for x in range(self.width)] for z in range(self.depth)]

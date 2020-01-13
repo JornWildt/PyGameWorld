@@ -2,70 +2,40 @@
 
 
 class SceneBuilder:
-    def __init__(self, scene, sprites):
-        self.scene = scene
-        self.sprites = sprites
+    def __init__(self, init_environment):
+        self.scene = init_environment.scene
+        self.sprites = init_environment.sprites
+        self.collision_map = init_environment.collision_map
         self.symbol_map = {}
+
 
     def define_tile(self, symbol, method):
         self.symbol_map[symbol] = method
 
-    def build_scene(self):
-        self.load_scene_from_map()
 
-    def load_scene_from_map(self):
-        scene = self.scene
+    def build_scene(self):
         scene_map_array = self.scene_map.split('\n')
 
         scene_map_array = list(filter(None,scene_map_array))
 
-        scene.width = int(len(scene_map_array[0]) / 2) + 1
-        scene.height = len(scene_map_array)
-        scene.depth = 3
-        scene.size = (scene.width, scene.height, scene.depth)
-        scene.tile_map = [[[None for y in range(scene.height)] for x in range(scene.width)] for z in range(scene.depth)]
-
+        width = int(len(scene_map_array[0]) / 2) + 1
+        height = len(scene_map_array)
+        depth = 3
+        self.scene.initialize(width, height, depth)
+        self.collision_map.initialize(self.scene)
         
-        for x in range(scene.width):
-            for y in range(scene.height):
+        for x in range(self.scene.width):
+            for y in range(self.scene.height):
                 symbol = scene_map_array[y][x*2]
                 if symbol != ' ':
                     builder_method = self.symbol_map[symbol]
                     builder_method(self, symbol, (x,y))
 
-    def place_cube(self, x,y,z, tile_type, sprite):
-        self.scene.tile_map[z][x][y] = Tile((x,y,z), tile_type, sprite)
+        self.collision_map.load_from_scene(self.scene)
 
 
-        #         for 
-        #         if scene_src_array[y][x] == 'x' or scene_src_array[y][x] == 'X':
-        #             self.tile_map[0][x][y] = Tile((x,y,0), TileType.Wall, floor_wall_sprite)
-        #         elif scene_src_array[y][x] == 'B':
-        #             self.tile_map[0][x][y] = Tile((x,y,0), TileType.Wall, floor_sprite)
-        #         elif scene_src_array[y][x] == 'b':
-        #             self.tile_map[0][x][y] = Tile((x,y,0), TileType.Wall, floor_sprite)
-        #         else:
-        #             self.tile_map[0][x][y] = Tile((x,y,0), TileType.Floor, floor_sprite)
-
-        # for x in range(self.width):
-        #     for y in range(self.height):
-        #         if scene_src_array[y][x] == 'X':
-        #             self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, wall_sprite)
-        #         elif scene_src_array[y][x] == 'x' or scene_src_array[y][x] == '#':
-        #             self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, None)
-        #         elif scene_src_array[y][x] == 'B':
-        #             self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, box_sprite)
-        #         elif scene_src_array[y][x] == 'b':
-        #             self.tile_map[1][x][y] = Tile((x,y,1), TileType.Wall, barrel_sprite)
-
-        # for z in range(2, self.depth):
-        #     for x in range(self.width):
-        #         for y in range(self.height):
-        #             if scene_src_array[y][x] == 'X':
-        #                 self.tile_map[z][x][y] = Tile((x,y,z), TileType.Wall, wall_sprite)
-        #             if scene_src_array[y][x] == '#' and z == 2:
-        #                 self.tile_map[z][x][y] = Tile((x,y,z), TileType.Wall, None)
-        #             elif scene_src_array[y][x] == '#' and z != 2:
-        #                 self.tile_map[z][x][y] = Tile((x,y,z), TileType.Wall, wall_sprite)
+    def place_location_event_trigger(self, pos, message_name, item):
+        self.collision_map.register_static_item(pos, (1,1,1), message_name, item)
 
 
+        

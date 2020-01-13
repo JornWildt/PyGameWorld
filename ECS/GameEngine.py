@@ -15,7 +15,6 @@ class GameEngine:
 
         while True:
             
-            # TODO: no need to clear whole screen!
             self.game_environment.screen.fill((0,0,0))
             
             # Event processing here, stuff the users does.

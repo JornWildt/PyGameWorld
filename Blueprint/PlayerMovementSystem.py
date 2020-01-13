@@ -20,7 +20,7 @@ class PlayerMovementSystem:
         (-0.71,-0.71)
     ]
     
-    def on_tile_collision(p):
+    def on_tile_collision(game_environment, p):
         entity = p[0]
         tile = p[1]
 
