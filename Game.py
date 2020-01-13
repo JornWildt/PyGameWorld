@@ -102,7 +102,7 @@ entities = EntityRepository()
 player_entity = entities.add_entity(GhostFactory.build_a_player('Mum', 2,2))
 
 
-game_environment = GameEnvironment()
+game_environment = GameEnvironment(settings)
 message_bus = MessageBus(game_environment)
 
 systems = SystemsRepository()
