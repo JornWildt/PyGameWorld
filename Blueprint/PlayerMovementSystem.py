@@ -8,6 +8,7 @@ class PlayerMovementSystem:
     def __init__(self, message_bus):
         self.last_direction = 0
         message_bus.subscribe('tile_collision', PlayerMovementSystem.on_tile_collision)
+        message_bus.subscribe('set_player_position', PlayerMovementSystem.on_set_player_position)
 
     direction_vectors = [
         (0,-1),
@@ -113,5 +114,12 @@ class PlayerMovementSystem:
             vector = (0,0)
 
         return (vector, speed, direction)
+        
+
+    def on_set_player_position(game_environment, msg):
+        body = game_environment.player_entity.get_component_of_type(BodyComponent)
+        phys = game_environment.player_entity.get_component_of_type(PhysicsComponent)
+        phys.velocity = (0,0,0)
+        body.position = msg.position
         
 

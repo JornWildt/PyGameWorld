@@ -1,5 +1,7 @@
-﻿from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
-from Blueprint.Scenes.Scene_A2_Builder import Scene_A2_Builder
+﻿from .Scenes.Scene_A1_Builder import Scene_A1_Builder
+from .Scenes.Scene_A2_Builder import Scene_A2_Builder
+from .Messages.SetPlayerPositionMessage import SetPlayerPositionMessage
+#from .PlayerMovementSystem import PlayerMovementSystem
 from ECS.GameEngine import GameEngine
 
 
@@ -24,3 +26,5 @@ class GameEngine2(GameEngine):
             GameEngine2.new_scene_builder = Scene_A1_Builder
         else:
             GameEngine2.new_scene_builder = Scene_A2_Builder
+
+        game_environment.message_bus.publish('set_player_position', SetPlayerPositionMessage(msg.start_position))
