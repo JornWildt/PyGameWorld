@@ -24,9 +24,25 @@ from Rendering.ExtPygAnimation import ExtPygAnimation
 from Scene.Scene import Scene
 
 
-pygame.init()
-
 settings = GameSettings()
+
+
+def load_animation(filename, rows, cols):
+    images = pyganim.getImagesFromSpriteSheet(filename, rows=rows, cols=cols, rects=[])
+    frames = list(zip(images, [100] * len(images)))
+    anim = pyganim.PygAnimation(frames)
+    anim.play()
+    return anim
+
+
+def load_ext_animation(filename, rows, cols):
+    images = pyganim.getImagesFromSpriteSheet(filename, rows=rows, cols=cols, rects=[])
+    frames = list(zip(images, [100] * len(images)))
+    anim = ExtPygAnimation(settings, frames)
+    return anim
+
+
+pygame.init()
 
 screen = pygame.display.set_mode((settings.window_width, settings.window_height))
 #screen = pygame.display.set_mode(flags = pygame.FULLSCREEN)
@@ -62,7 +78,7 @@ ballFrames = list(zip(ballImages, [100] * len(ballImages)))
 ballAnim = ExtPygAnimation(settings, ballFrames)
 ballAnim.play()
 
-teleport_images = SpriteSheet("OriginalPixelArt/JW/Teleport3D.png")
+teleport_sprite = load_animation("OriginalPixelArt/JW/Teleport3D.png", 1, 6)
 
 scene_sprites = {
     'floor': floor1,
@@ -72,7 +88,7 @@ scene_sprites = {
     'barrel': stub,
     'ghost': ghostAnim,
     'ball': ballAnim,
-    'teleport': teleport_images.image_at((0,0,64,64))
+    'teleport': teleport_sprite
 }
 
 pillar_sprites = SpriteSheet("OriginalPixelArt/JW/1x1Pilar3D.png")

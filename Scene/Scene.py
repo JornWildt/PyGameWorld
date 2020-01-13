@@ -42,8 +42,12 @@ class Scene:
         self.trigger_map = [[[None for z in range(self.depth)] for y in range(self.height)] for x in range(self.width)]
 
 
-    def place_cube(self, x,y,z, tile_type, sprite):
-        self.tile_map[z][x][y] = Tile((x,y,z), tile_type, sprite)
+    def place_cube(self, x,y,z, tile_type, image):
+        self.tile_map[z][x][y] = Tile((x,y,z), tile_type, None, image)
+
+    
+    def place_animated_cube(self, x,y,z, tile_type, sprite):
+        self.tile_map[z][x][y] = Tile((x,y,z), tile_type, sprite, None)
 
     
     def start_frame(self):
@@ -105,6 +109,8 @@ class Scene:
                                     ypos = (y-x) * self.ymult - z * self.zmult + yoffset# - 48
                                     if tile.image != None:
                                         screen.blit(tile.image, (xpos,ypos))
+                                    elif tile.sprite != None:
+                                        tile.sprite.blit(screen, (xpos,ypos))
 
                                 items = self.items_index[z][x][y]
                                 for item in items if items != None else []:

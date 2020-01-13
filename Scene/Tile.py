@@ -2,9 +2,10 @@
 
 class Tile():
 
-    def __init__(self, pos, tile_type, image):
+    def __init__(self, pos, tile_type, sprite, image):
         self.position = pos
         self.tile_type = tile_type
+        self.sprite = sprite
         self.image = image
 
 
