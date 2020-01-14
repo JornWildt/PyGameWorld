@@ -1,7 +1,7 @@
 ﻿import random
 from .BallMovementComponent import BallMovementComponent
-from .PhysicsComponent import PhysicsComponent
-from .BodyComponent import BodyComponent
+from Core.Physics.PhysicsComponent import PhysicsComponent
+from Core.Physics.BodyComponent import BodyComponent
 
 class BallMovementSystem:
     def __init__(self, message_bus):

@@ -1,8 +1,8 @@
 ﻿import pygame
-from Physics.PhysicsComponent import PhysicsComponent
-from Physics.BodyComponent import BodyComponent
+from Core.Physics.PhysicsComponent import PhysicsComponent
+from Core.Physics.BodyComponent import BodyComponent
+from Core.Rendering.SpriteComponent import SpriteComponent
 from Blueprint.PlayerMovementComponent import PlayerMovementComponent
-from Rendering.SpriteComponent import SpriteComponent
 
 class PlayerMovementSystem:
     def __init__(self, message_bus):

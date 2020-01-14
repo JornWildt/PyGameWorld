@@ -1,8 +1,8 @@
 ﻿from .Scenes.Scene_A1_Builder import Scene_A1_Builder
 from .Scenes.Scene_A2_Builder import Scene_A2_Builder
 from .Messages.SetPlayerPositionMessage import SetPlayerPositionMessage
-from Rendering.Fader import fade_screen
-from ECS.GameEngine import GameEngine
+from Core.Rendering.Fader import fade_screen
+from Core.GameEngine import GameEngine
 
 
 class GameEngine2(GameEngine):

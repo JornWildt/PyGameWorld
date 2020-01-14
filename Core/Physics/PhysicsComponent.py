@@ -1,4 +1,4 @@
-﻿from ECS.Component import Component
+﻿from Core.ECS.Component import Component
 
 class PhysicsComponent(Component):
     def __init__(self, vel, acc):

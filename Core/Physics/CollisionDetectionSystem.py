@@ -1,5 +1,4 @@
 ﻿from .BodyComponent import BodyComponent
-# from .CollisionMap import CollisionMap
 
 
 class CollisionDetectionSystem:

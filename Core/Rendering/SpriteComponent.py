@@ -1,4 +1,4 @@
-﻿from ECS.Component import Component
+﻿from ..ECS.Component import Component
 
 class SpriteComponent(Component):
     def __init__(self, sprite_id):

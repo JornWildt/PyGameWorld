@@ -1,6 +1,6 @@
 ﻿import pygame
 import sys
-from Utility import Texts
+from .Utility import Texts
 
 class GameEngine:
     def __init__(self, settings, game_environment):

@@ -1,7 +1,7 @@
 ﻿import pygame as pygame
 from .Tile import Tile
 from .TileType import *
-from Physics.BodyComponent import BodyComponent
+from ..Physics.BodyComponent import BodyComponent
 
 class Scene:
 

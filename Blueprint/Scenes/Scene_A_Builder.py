@@ -1,7 +1,7 @@
-﻿from Scene.Tile import Tile
-from Scene.TileType import *
+﻿from Core.Scene.Tile import Tile
+from Core.Scene.TileType import *
 from ..SceneBuilder import SceneBuilder
-from ECS.Messages.NewSceneMessage import NewSceneMessage
+from Core.Messages.NewSceneMessage import NewSceneMessage
 
 
 class Scene_A_Builder(SceneBuilder):

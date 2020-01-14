@@ -1,4 +1,4 @@
-﻿from Scene.Tile import Tile
+﻿from Core.Scene.Tile import Tile
 
 
 class SceneBuilder:

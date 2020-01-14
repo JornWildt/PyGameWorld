@@ -1,5 +1,5 @@
-﻿from Scene.Tile import Tile
-from Scene.TileType import *
+﻿from Core.Scene.Tile import Tile
+from Core.Scene.TileType import *
 from .Scene_A_Builder import Scene_A_Builder
 
 class Scene_A1_Builder(Scene_A_Builder):

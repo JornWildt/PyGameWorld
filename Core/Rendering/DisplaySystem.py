@@ -1,4 +1,4 @@
-﻿from Physics.BodyComponent import BodyComponent
+﻿from ..Physics.BodyComponent import BodyComponent
 from .SpriteComponent import SpriteComponent
 from .DisplayComponent import DisplayComponent
 

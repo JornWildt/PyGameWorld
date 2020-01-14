@@ -1,9 +1,9 @@
-﻿from ECS.Entity import Entity
-from SimpleComponents.NameComponent import NameComponent
-from Physics.BodyComponent import BodyComponent
-from Physics.PhysicsComponent import PhysicsComponent
-from Physics.BallMovementComponent import BallMovementComponent
-from Rendering.SpriteComponent import SpriteComponent
+﻿from Core.ECS.Entity import Entity
+from Core.SimpleComponents.NameComponent import NameComponent
+from Core.Physics.BodyComponent import BodyComponent
+from Core.Physics.PhysicsComponent import PhysicsComponent
+from Core.Rendering.SpriteComponent import SpriteComponent
+from .BallMovementComponent import BallMovementComponent
 from .PlayerMovementComponent import PlayerMovementComponent
 
 

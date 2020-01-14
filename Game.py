@@ -1,27 +1,27 @@
 ﻿import pygame
 import pyganim
 from GameSettings import GameSettings
-from ECS.GameEnvironment import GameEnvironment
-from ECS.GameEngine import GameEngine
-from ECS.SystemsRepository import SystemsRepository
-from ECS.EntityRepository import EntityRepository
-from ECS.Entity import Entity
-from ECS.MessageBus import MessageBus
-from SimpleComponents.NameComponent import NameComponent
-from Physics.PhysicsSystem import PhysicsSystem
-from Physics.BallMovementSystem import BallMovementSystem
-from Physics.CollisionMap import CollisionMap
-from Physics.CollisionDetectionSystem import CollisionDetectionSystem
-from Rendering.DisplaySystem import DisplaySystem
-from Rendering.DisplayComponent import DisplayComponent
+from Core.GameEnvironment import GameEnvironment
+#from Core.ECS.GameEngine import GameEngine
+from Core.ECS.SystemsRepository import SystemsRepository
+from Core.ECS.EntityRepository import EntityRepository
+from Core.ECS.Entity import Entity
+from Core.MessageBus import MessageBus
+from Core.SimpleComponents.NameComponent import NameComponent
+from Core.Physics.PhysicsSystem import PhysicsSystem
+from Core.Physics.CollisionMap import CollisionMap
+from Core.Physics.CollisionDetectionSystem import CollisionDetectionSystem
+from Core.Rendering.DisplaySystem import DisplaySystem
+from Core.Rendering.DisplayComponent import DisplayComponent
+from Core.Rendering.SpriteSheet import SpriteSheet
+from Core.Rendering.ExtPygAnimation import ExtPygAnimation
+from Core.Scene.Scene import Scene
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
 from Blueprint.Scenes.Scene_A2_Builder import Scene_A2_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
+from Blueprint.BallMovementSystem import BallMovementSystem
 from Blueprint.GameEngine2 import GameEngine2
-from Rendering.SpriteSheet import SpriteSheet
-from Rendering.ExtPygAnimation import ExtPygAnimation
-from Scene.Scene import Scene
 
 
 settings = GameSettings()
@@ -49,36 +49,36 @@ screen = pygame.display.set_mode((settings.window_width, settings.window_height)
 
 pygame.display.set_caption(settings.window_caption)
 
-barrels_sprites = SpriteSheet("OriginalPixelArt/JW/barrel3D.png")
+barrels_sprites = SpriteSheet("Blueprint/Assets/Random/barrel3D.png")
 barrels_sprites.define("barrel", (0,0,48,48))
 barrel = barrels_sprites.get('barrel')
 
-stub_sprites = SpriteSheet("OriginalPixelArt/JW/Stub3D.png")
+stub_sprites = SpriteSheet("Blueprint/Assets/Random/Stub3D.png")
 stub_sprites.define("stub", (0,0,64,64))
 stub = stub_sprites.get('stub')
 
-furniture_sprites = SpriteSheet("OriginalPixelArt/JW/furniture3D.png")
+furniture_sprites = SpriteSheet("Blueprint/Assets/Random/furniture3D.png")
 furniture_sprites.define("box", (0,0,64,64))
 box = furniture_sprites.get('box')
 
-floor_sprites = SpriteSheet("OriginalPixelArt/JW/Floor3D.png")
+floor_sprites = SpriteSheet("Blueprint/Assets/Random/Floor3D.png")
 floor_sprites.define("floor1", (0,0,64,64))
 floor_sprites.define("floor2", (0,0,64,64))
 floor_sprites.define("floor_wall", (64,0,64,64))
 floor1 = floor_sprites.get('floor1')
 floor2 = floor_sprites.get('floor2')
 
-ghostImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ghost3D.png", rows=1, cols=1, rects=[])
+ghostImages = pyganim.getImagesFromSpriteSheet("Blueprint/Assets/Random/Ghost3D.png", rows=1, cols=1, rects=[])
 ghostFrames = list(zip(ghostImages, [100] * len(ghostImages)))
 ghostAnim = ExtPygAnimation(settings, ghostFrames)
 ghostAnim.play()
 
-ballImages = pyganim.getImagesFromSpriteSheet("OriginalPixelArt/JW/Ball3D.png", rows=1, cols=3, rects=[])
+ballImages = pyganim.getImagesFromSpriteSheet("Blueprint/Assets/Random/Ball3D.png", rows=1, cols=3, rects=[])
 ballFrames = list(zip(ballImages, [100] * len(ballImages)))
 ballAnim = ExtPygAnimation(settings, ballFrames)
 ballAnim.play()
 
-teleport_sprite = load_animation("OriginalPixelArt/JW/Teleport3D.png", 1, 6)
+teleport_sprite = load_animation("Blueprint/Assets/Random/Teleport3D.png", 1, 6)
 
 scene_sprites = {
     'floor': floor1,
@@ -91,12 +91,12 @@ scene_sprites = {
     'teleport': teleport_sprite
 }
 
-pillar_sprites = SpriteSheet("OriginalPixelArt/JW/1x1Pilar3D.png")
+pillar_sprites = SpriteSheet("Blueprint/Assets/Random/1x1Pilar3D.png")
 pillar_sprites.define("pillar", (0,0,64,64))
 pillar = pillar_sprites.get('pillar')
 
 playerAnimations = []
-playerSpritesheet =  SpriteSheet("OriginalPixelArt/JW/Player.png")
+playerSpritesheet =  SpriteSheet("Blueprint/Assets/Random/Player.png")
 for d in range(0,8):
     playerImages = []
     for f in range(0,1):
