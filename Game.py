@@ -12,13 +12,10 @@ from Core.Physics.CollisionMap import CollisionMap
 from Core.Physics.CollisionDetectionSystem import CollisionDetectionSystem
 from Core.Rendering.DisplaySystem import DisplaySystem
 from Core.Rendering.DisplayComponent import DisplayComponent
-from Core.Rendering.SpriteSheet import SpriteSheet
-#from Core.Rendering.ExtPygAnimation import ExtPygAnimation
 from Core.Scene.Scene import Scene
 from Core.AssetsManager import AssetsManager
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
-from Blueprint.Scenes.Scene_A2_Builder import Scene_A2_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Blueprint.BallMovementSystem import BallMovementSystem
 from Blueprint.GameEngine2 import GameEngine2
