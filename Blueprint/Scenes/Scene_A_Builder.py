@@ -36,13 +36,13 @@ class Scene_A_Builder(SceneBuilder):
     def __init__(self, game_environment):
         super().__init__(game_environment)
 
-        sprites = game_environment.sprites
-        self.floor_sprite = sprites['floor']
-        self.floor_wall_sprite = sprites['floor_wall']
-        self.wall_sprite = sprites['wall']
-        self.box_sprite = sprites['box']
-        self.barrel_sprite = sprites['barrel']
-        self.teleport_sprite = sprites['teleport']
+        assets = game_environment.assets
+        self.floor_sprite = assets['floor']
+        self.floor_wall_sprite = assets['floor_wall']
+        self.wall_sprite = assets['wall']
+        self.box_sprite = assets['box']
+        self.barrel_sprite = assets['barrel']
+        self.teleport_sprite = assets['teleport']
 
         self.define_tile_builder('.', Scene_A_Builder.build_floor)
         self.define_tile_builder('x', Scene_A_Builder.build_see_through_wall)

@@ -4,7 +4,7 @@
 class SceneBuilder:
     def __init__(self, init_environment):
         self.scene = init_environment.scene
-        self.sprites = init_environment.sprites
+        self.assets = init_environment.assets
         self.collision_map = init_environment.collision_map
         self.symbol_map = {}
 

@@ -32,7 +32,87 @@
       "box": {
         "type": "image",
         "position" : [0,0,64,64]
+      },
+      "wall": {
+        "type": "image",
+        "position" : [0,0,64,64]
       }    
+    }
+  },
+  "stub_sprites": {
+    "type": "spritesheet",
+    "file": "Random/Stub3D.png",
+    "content": {
+      "stub": {
+        "type": "image",
+        "position" : [0,0,64,64]
+      },
+      "barrel": {
+        "type": "image",
+        "position" : [0,0,64,64]
+      }    
+    }
+  },
+  "player_sprites": {
+    "type": "spritesheet",
+    "file": "Random/Player.png",
+    "content": {
+      "player_0": {
+        "type": "animation",
+        "rectangle": [0,0,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      },
+      "player_1": {
+        "type": "animation",
+        "rectangle": [0,96,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      },
+      "player_2": {
+        "type": "animation",
+        "rectangle": [0,192,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      },
+      "player_3": {
+        "type": "animation",
+        "rectangle": [0,288,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      },
+      "player_4": {
+        "type": "animation",
+        "rectangle": [0,384,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      },
+      "player_5": {
+        "type": "animation",
+        "rectangle": [0,480,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      },
+      "player_6": {
+        "type": "animation",
+        "rectangle": [0,576,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      },
+      "player_7": {
+        "type": "animation",
+        "rectangle": [0,672,64,96],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,2]
+      }
     }
   }
 }

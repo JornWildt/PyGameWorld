@@ -2,11 +2,22 @@
 import json
 import os
 from .Rendering.SpriteSheet import SpriteSheet
+from .Rendering.ExtPygAnimation import ExtPygAnimation
 
 class AssetsManager:
+    def __init__(self, settings):
+        self.settings = settings
+
+    def __getitem__(self, name):
+        return self.assets[name]
+
+
     def get(self, name):
         return self.assets[name]
-        
+
+
+    def declare(self, name, asset):
+        self.assets[name] = asset
 
     def load_from_directory(self, dir):
         self.assets = {}
@@ -55,5 +66,25 @@ class AssetsManager:
             position = sprite_content["position"]
             image = sheet.image_at(position)
             return image
+        if sprite_content["type"] == "animation":
+            rectangle = sprite_content["rectangle"]
+            rows = sprite_content["rows"]
+            cols = sprite_content["cols"]
+            volume = sprite_content["volume"] if "volume" in sprite_content else None
+            return self.load_animation_from_sheet(sheet, rectangle, rows, cols, volume)
         else:
             raise NameError("Undefined asset type: " + sprite_content["type"])
+
+    def load_animation_from_sheet(self, sheet, rectangle, rows, cols, volume):
+        images =[]
+        for r in range(rows):
+            for c in range(cols):
+                sub_rectangle = (rectangle[0] + c * rectangle[2], rectangle[1] + r * rectangle[3], rectangle[2], rectangle[3])
+                image = sheet.image_at(sub_rectangle)
+                images.append(image)
+
+        frames = list(zip(images, [100] * len(images)))
+        anim = ExtPygAnimation(self.settings, frames, volume)
+        anim.play()
+
+        return anim
