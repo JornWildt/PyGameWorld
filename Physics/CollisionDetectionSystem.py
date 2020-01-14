@@ -25,10 +25,13 @@ class CollisionDetectionSystem:
                     for z in range(z0,z1) if not found else []:
                         box_x = body.position[0] - body.size[0]/2
                         box_y = body.position[1] - body.size[1]/2
+                        box_z = body.position[2] - body.size[2]/2
                         items = game_environment.collision_map.get_items_at((x,y,z))
                         for item in items:
-                            # TODO: size should be taken from item
-                            if box_x <= item.position[0]+0.5 and box_x + body.size[0] >= item.position[0]-0.5 and box_y <= item.position[1]+0.5 and box_y + body.size[1] >= item.position[1]-0.5 and body.position[2] == item.position[2]:
+                            item_size_x2 = item.size[0] / 2
+                            item_size_y2 = item.size[1] / 2
+                            item_size_z2 = item.size[2] / 2
+                            if box_x <= item.position[0]+item_size_x2 and box_x + body.size[0] >= item.position[0]-item_size_x2 and box_y <= item.position[1]+item_size_y2 and box_y + body.size[1] >= item.position[1]-item_size_y2 and box_z <= item.position[2]+item_size_z2 and box_z + body.size[2] >= item.position[2]-item_size_z2:
                                 game_environment.message_bus.publish(item.message_name, (body.entity, item.item))
                                 found = True
                                 break

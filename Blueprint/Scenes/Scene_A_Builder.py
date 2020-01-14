@@ -30,7 +30,7 @@ class Scene_A_Builder(SceneBuilder):
     def build_teleport(self, symbol, pos):
         self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
         self.scene.place_animated_cube(pos[0],pos[1],1, TileType.Space, self.teleport_sprite)
-        self.place_location_event_trigger((pos[0],pos[1],1), 'new_scene', NewSceneMessage(self.teleports[symbol[1]][0], self.teleports[symbol[1]][1]))
+        self.place_location_event_trigger((pos[0],pos[1],1), (0.5,0.5,1), 'new_scene', NewSceneMessage(self.teleports[symbol[1]][0], self.teleports[symbol[1]][1]))
 
 
     def __init__(self, game_environment):

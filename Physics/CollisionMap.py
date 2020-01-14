@@ -15,7 +15,7 @@
                 for z in range(scene.size[2]):
                     tile = scene.get_tile_at((x,y,z))
                     if tile != None:
-                        self.static_map[x][y][z].append(CollisionRegistration(tile.position, 'tile_collision', tile))
+                        self.static_map[x][y][z].append(CollisionRegistration(tile.position, (1,1,1), 'tile_collision', tile))
 
 
     def register_static_item(self, pos, size, message_name, item):
@@ -31,7 +31,7 @@
             for y in range(y0,y1):
                 for z in range(z0,z1):
                     if x >= 0 and x < self.size[0] and y >= 0 and y < self.size[1] and z >= 0 and z < self.size[2]:
-                        self.static_map[x][y][z].append(CollisionRegistration(pos, message_name, item))
+                        self.static_map[x][y][z].append(CollisionRegistration(pos, size, message_name, item))
 
 
 
@@ -69,7 +69,8 @@
 
 
 class CollisionRegistration:
-    def __init__(self, position, message_name, item):
+    def __init__(self, position, size, message_name, item):
         self.position = position
+        self.size = size
         self.message_name = message_name
         self.item = item

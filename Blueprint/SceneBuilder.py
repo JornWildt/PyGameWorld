@@ -35,8 +35,8 @@ class SceneBuilder:
         self.collision_map.load_from_scene(self.scene)
 
 
-    def place_location_event_trigger(self, pos, message_name, message):
-        self.collision_map.register_static_item(pos, (1,1,1), message_name, message)
+    def place_location_event_trigger(self, pos, size, message_name, message):
+        self.collision_map.register_static_item(pos, size, message_name, message)
 
 
         
