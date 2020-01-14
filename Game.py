@@ -47,7 +47,7 @@ pygame.init()
 screen = pygame.display.set_mode((settings.window_width, settings.window_height))
 #screen = pygame.display.set_mode(flags = pygame.FULLSCREEN)
 
-pygame.display.set_caption("World")
+pygame.display.set_caption(settings.window_caption)
 
 barrels_sprites = SpriteSheet("OriginalPixelArt/JW/barrel3D.png")
 barrels_sprites.define("barrel", (0,0,48,48))

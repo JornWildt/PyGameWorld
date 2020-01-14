@@ -8,19 +8,23 @@ class Scene:
     def __init__(self, settings):
         self.settings = settings
 
+        # Pixel multiplies for x/y/z directions
         self.xmult = int(self.settings.map_tile_pixels/2)
         self.ymult = int(self.settings.map_tile_pixels/4)
         self.zmult = int(self.settings.map_tile_pixels/2)
 
-        self.xviewsize = 40
-        self.yviewsize = 40
-        self.zviewsize = 32
+        # Viewport size - area (volume) of tiles (cubes) to render
+        self.xviewsize = settings.map_viewport_xsize
+        self.yviewsize = settings.map_viewport_ysize
+        self.zviewsize = settings.map_viewport_zsize
 
+        # Half viewport sized
         self.xviewsize_2 = int(self.xviewsize/2)
         self.yviewsize_2 = int(self.yviewsize/2)
         self.zviewsize_2 = int(self.zviewsize/2)
 
-        # These constants define size which is cut out of the corners
+        # These constants define size which part is cut out of the corners
+
         # Top-left
         self.corner_size_1 = int((self.xviewsize + self.yviewsize)/4) - 1
         # Top-right and bottom-left
@@ -28,6 +32,7 @@ class Scene:
         # Bottom-right
         self.corner_size_3 = self.xviewsize + self.yviewsize - int((self.xviewsize + self.yviewsize)/4) - 1
 
+        # Center of window
         self.window_x = int(self.settings.window_width/2)
         self.window_y = int(self.settings.window_height/2)
 
