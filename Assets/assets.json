@@ -1,0 +1,38 @@
+﻿{
+  "ball": {
+    "type": "animation",
+    "file": "Random/Ball3D.png",
+    "rows": 1,
+    "cols": 1
+  },
+  "teleport": {
+    "type": "animation",
+    "file": "Random/Teleport3D.png",
+    "rows": 1,
+    "cols": 6
+  },
+  "floor_sprites": {
+    "type": "spritesheet",
+    "file": "Random/Floor3D.png",
+    "content": {
+      "floor": {
+        "type": "image",
+        "position" : [0,0,64,64]
+      },
+      "floor_wall": {
+        "type": "image",
+        "position" : [64,0,64,64]
+      }    
+    }
+  },
+  "furniture_sprites": {
+    "type": "spritesheet",
+    "file": "Random/furniture3D.png",
+    "content": {
+      "box": {
+        "type": "image",
+        "position" : [0,0,64,64]
+      }    
+    }
+  }
+}

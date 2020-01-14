@@ -13,10 +13,10 @@ class GhostFactory:
     def build_a_ghost(self, name, x,y):
         ghost = Entity([
             NameComponent(name),
-            BodyComponent((x,y,1)),
-            PhysicsComponent((0,0,0), (0.001, 0.001, 0.001)),
+            BodyComponent((x,y,1), (0.9, 0.9, 0.9)),
+            PhysicsComponent((0,0,0), (0.001, 0.001, 0.0)),
             # PhysicsComponent((0,0,0), (0,0,0)), #(0.001, 0.001, 0.001)),
-            RandomMovementComponent(),
+            BallMovementComponent(),
             SpriteComponent('ghost')
         ])
         return ghost

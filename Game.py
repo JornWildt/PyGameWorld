@@ -16,6 +16,7 @@ from Core.Rendering.DisplayComponent import DisplayComponent
 from Core.Rendering.SpriteSheet import SpriteSheet
 from Core.Rendering.ExtPygAnimation import ExtPygAnimation
 from Core.Scene.Scene import Scene
+from Core.AssetsManager import AssetsManager
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
 from Blueprint.Scenes.Scene_A2_Builder import Scene_A2_Builder
@@ -44,59 +45,59 @@ def load_ext_animation(filename, rows, cols):
 
 pygame.init()
 
+
 screen = pygame.display.set_mode((settings.window_width, settings.window_height))
 #screen = pygame.display.set_mode(flags = pygame.FULLSCREEN)
 
 pygame.display.set_caption(settings.window_caption)
 
-barrels_sprites = SpriteSheet("Blueprint/Assets/Random/barrel3D.png")
-barrels_sprites.define("barrel", (0,0,48,48))
-barrel = barrels_sprites.get('barrel')
 
-stub_sprites = SpriteSheet("Blueprint/Assets/Random/Stub3D.png")
-stub_sprites.define("stub", (0,0,64,64))
-stub = stub_sprites.get('stub')
+assets = AssetsManager()
+assets.load_from_directory("Assets")
 
-furniture_sprites = SpriteSheet("Blueprint/Assets/Random/furniture3D.png")
-furniture_sprites.define("box", (0,0,64,64))
-box = furniture_sprites.get('box')
 
-floor_sprites = SpriteSheet("Blueprint/Assets/Random/Floor3D.png")
-floor_sprites.define("floor1", (0,0,64,64))
-floor_sprites.define("floor2", (0,0,64,64))
-floor_sprites.define("floor_wall", (64,0,64,64))
-floor1 = floor_sprites.get('floor1')
-floor2 = floor_sprites.get('floor2')
+# stub_sprites = SpriteSheet("Assets/Random/Stub3D.png")
+# stub_sprites.define("stub", (0,0,64,64))
+# stub = stub_sprites.get('stub')
 
-ghostImages = pyganim.getImagesFromSpriteSheet("Blueprint/Assets/Random/Ghost3D.png", rows=1, cols=1, rects=[])
-ghostFrames = list(zip(ghostImages, [100] * len(ghostImages)))
-ghostAnim = ExtPygAnimation(settings, ghostFrames)
-ghostAnim.play()
+# furniture_sprites = SpriteSheet("Assets/Random/furniture3D.png")
+# furniture_sprites.define("box", (0,0,64,64))
+# box = furniture_sprites.get('box')
 
-ballImages = pyganim.getImagesFromSpriteSheet("Blueprint/Assets/Random/Ball3D.png", rows=1, cols=3, rects=[])
-ballFrames = list(zip(ballImages, [100] * len(ballImages)))
-ballAnim = ExtPygAnimation(settings, ballFrames)
-ballAnim.play()
+# floor_sprites = SpriteSheet("Assets/Random/Floor3D.png")
+# floor_sprites.define("floor1", (0,0,64,64))
+# floor_sprites.define("floor_wall", (64,0,64,64))
+# floor1 = floor_sprites.get('floor1')
 
-teleport_sprite = load_animation("Blueprint/Assets/Random/Teleport3D.png", 1, 6)
+# ghostImages = pyganim.getImagesFromSpriteSheet("Assets/Random/Ghost3D.png", rows=1, cols=1, rects=[])
+# ghostFrames = list(zip(ghostImages, [100] * len(ghostImages)))
+# ghostAnim = ExtPygAnimation(settings, ghostFrames)
+# ghostAnim.play()
+
+# ballImages = pyganim.getImagesFromSpriteSheet("Assets/Random/Ball3D.png", rows=1, cols=3, rects=[])
+# ballFrames = list(zip(ballImages, [100] * len(ballImages)))
+# ballAnim = ExtPygAnimation(settings, ballFrames)
+# ballAnim.play()
+
+# teleport_sprite = load_animation("Assets/Random/Teleport3D.png", 1, 6)
 
 scene_sprites = {
-    'floor': floor1,
-    'floor_wall': floor_sprites.get('floor_wall'),
-    'wall': box,
-    'box': box,
-    'barrel': stub,
-    'ghost': ghostAnim,
-    'ball': ballAnim,
-    'teleport': teleport_sprite
+    'floor': assets.get('floor'),
+    'floor_wall': assets.get('floor_wall'),
+    'wall': assets.get('box'),
+    'box': assets.get('box'),
+    'barrel': assets.get('box'),
+    # 'ghost': ghostAnim,
+    # 'ball': ballAnim,
+    'teleport': assets.get('teleport')
 }
 
-pillar_sprites = SpriteSheet("Blueprint/Assets/Random/1x1Pilar3D.png")
-pillar_sprites.define("pillar", (0,0,64,64))
-pillar = pillar_sprites.get('pillar')
+# pillar_sprites = SpriteSheet("Assets/Random/1x1Pilar3D.png")
+# pillar_sprites.define("pillar", (0,0,64,64))
+# pillar = pillar_sprites.get('pillar')
 
 playerAnimations = []
-playerSpritesheet =  SpriteSheet("Blueprint/Assets/Random/Player.png")
+playerSpritesheet =  SpriteSheet("Assets/Random/Player.png")
 for d in range(0,8):
     playerImages = []
     for f in range(0,1):
