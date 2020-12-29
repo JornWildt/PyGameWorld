@@ -20,7 +20,7 @@ class SceneBuilder:
 
         width = int(len(scene_map_array[0]) / 2) + 1
         height = len(scene_map_array)
-        depth = 3
+        depth = 6
         self.scene.initialize(width, height, depth)
         self.collision_map.initialize(self.scene)
         

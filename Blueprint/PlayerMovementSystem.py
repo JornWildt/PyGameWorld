@@ -36,14 +36,17 @@ class PlayerMovementSystem:
 
         # If hitting a map tile, backup to previous position
         if tile.tile_type.is_blocking:
-            body.position = phys.previous_position
+            body.position = body.previous_position
+            body.velocity = (0,0,0)
             player.hit_tile = tile
 
 
     def update(self, game_environment):
-        (vector, speed, direction) = PlayerMovementSystem.get_current_input_vector()
+        pressed_keys = pygame.key.get_pressed()
 
-        # Go through all player components (these is only one, so it seems like a bit of overkill ...)
+        (vector, speed, direction) = PlayerMovementSystem.get_current_input_vector(pressed_keys)
+
+        # Go through all player components (there is only one, so it seems like a bit of overkill ...)
         for (player, body, phys, sprite) in game_environment.entities_repository.get_components_of_types(PlayerMovementComponent, BodyComponent, PhysicsComponent, SpriteComponent):
 
             if direction != None and player.hit_tile != None:
@@ -60,18 +63,18 @@ class PlayerMovementSystem:
                     direction = (direction - 1) % 8
 
                 # Now update intended movement vector to the new direction
-                vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed)
+                vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed, 0)
+
                 player.hit_tile = None
 
-            phys.velocity = (
-                vector[0],
-                vector[1],
-                0)
+            vertical_speed = 0.2 if pressed_keys[pygame.K_SPACE] else phys.velocity[2]
 
-            if pygame.key.get_pressed()[pygame.K_SPACE]:
+            phys.velocity = (vector[0], vector[1], vertical_speed)
+
+            if pygame.key.get_pressed()[pygame.K_0]:
                 phys.velocity = (0,0,0)
                 body.position = (1,1,1)
-            
+
             if direction != None:
                 self.last_direction = direction
 
@@ -82,36 +85,34 @@ class PlayerMovementSystem:
             sprite.sprite_id = 'player_' + str(sprite_direction)
 
 
-    def get_current_input_vector():
-        pressed_keys = pygame.key.get_pressed()
-        
-        vector = (0,0)
+    def get_current_input_vector(pressed_keys):
+        vector = (0,0,0)
         direction = None
 
-        if pressed_keys[pygame.K_LEFT] and pressed_keys[pygame.K_UP]:
+        if pressed_keys[pygame.K_a] and pressed_keys[pygame.K_w]:
             direction = 7
-        elif pressed_keys[pygame.K_UP] and pressed_keys[pygame.K_RIGHT]:
+        elif pressed_keys[pygame.K_w] and pressed_keys[pygame.K_d]:
             direction = 1
-        elif pressed_keys[pygame.K_RIGHT] and pressed_keys[pygame.K_DOWN]:
+        elif pressed_keys[pygame.K_d] and pressed_keys[pygame.K_s]:
             direction = 3
-        elif pressed_keys[pygame.K_DOWN] and pressed_keys[pygame.K_LEFT]:
+        elif pressed_keys[pygame.K_s] and pressed_keys[pygame.K_a]:
             direction = 5
-        elif pressed_keys[pygame.K_LEFT]:
+        elif pressed_keys[pygame.K_a]:
             direction = 6
-        elif pressed_keys[pygame.K_UP]:
+        elif pressed_keys[pygame.K_w]:
             direction = 0
-        elif pressed_keys[pygame.K_RIGHT]:
+        elif pressed_keys[pygame.K_d]:
             direction = 2
-        elif pressed_keys[pygame.K_DOWN]:
+        elif pressed_keys[pygame.K_s]:
             direction = 4
 
-        speed = 0.25 if pressed_keys[pygame.K_LSHIFT] else 0.1
+        speed = 0.25 if pressed_keys[pygame.K_LSHIFT] or pressed_keys[pygame.K_RSHIFT] else 0.1
 
         if direction != None:
             direction = (direction + 1) % 8
-            vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed)
+            vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed, 0)
         else:
-            vector = (0,0)
+            vector = (0,0,0)
 
         return (vector, speed, direction)
         
@@ -120,6 +121,7 @@ class PlayerMovementSystem:
         body = game_environment.player_entity.get_component_of_type(BodyComponent)
         phys = game_environment.player_entity.get_component_of_type(PhysicsComponent)
         phys.velocity = (0,0,0)
+        phys.acceleration = (0,0,0)
         body.position = msg.position
         
 

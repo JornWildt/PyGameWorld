@@ -6,7 +6,7 @@
 
 TileType.Sea = TileType('sea', True)
 TileType.Grass = TileType('grass', False)
-TileType.Floor = TileType('floor', False)
+TileType.Floor = TileType('floor', True)
 TileType.Wall = TileType('wall', True)
 TileType.Space = TileType('space', False)
 

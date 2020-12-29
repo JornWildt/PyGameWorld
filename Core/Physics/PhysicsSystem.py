@@ -6,7 +6,7 @@ class PhysicsSystem:
 
         for (body,phys) in game_environment.entities_repository.get_components_of_types(BodyComponent, PhysicsComponent):
 
-            phys.previous_position = body.position
+            body.previous_position = body.position
 
             phys.velocity = (
                 phys.velocity[0] + phys.acceleration[0], 

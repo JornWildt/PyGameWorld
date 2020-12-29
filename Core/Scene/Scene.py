@@ -21,7 +21,7 @@ class Scene:
         # Half viewport sized
         self.xviewsize_2 = int(self.xviewsize/2)
         self.yviewsize_2 = int(self.yviewsize/2)
-        self.zviewsize_2 = int(self.zviewsize/2)
+        self.zviewsize_2 = int(self.zviewsize/2) * 2
 
         # These constants define size which part is cut out of the corners
 

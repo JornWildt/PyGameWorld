@@ -22,7 +22,6 @@ class GameEngine2(GameEngine):
 
 
     def on_new_scene(game_environment, collision):
-        entity = collision[0]
         GameEngine2.new_scene_message = msg = collision[1]
         if msg.scene_name == 'Scene_A1':
             GameEngine2.new_scene_builder = Scene_A1_Builder
