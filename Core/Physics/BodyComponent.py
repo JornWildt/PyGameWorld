@@ -6,3 +6,4 @@ class BodyComponent(Component):
         self.previous_position = None
         self.position = pos
         self.size = size
+        self.size_2 = (size[0]/2, size[1]/2, size[2]/2)
