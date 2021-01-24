@@ -67,9 +67,16 @@ class PlayerMovementSystem:
 
                 player.hit_tile = None
 
-            vertical_speed = 0.2 if pressed_keys[pygame.K_SPACE] else phys.velocity[2]
-
-            phys.velocity = (vector[0], vector[1], vertical_speed)
+            if pressed_keys[pygame.K_SPACE] and body.is_grounded:
+                phys.velocity = (vector[0], vector[1], 0.5)
+                phys.acceleration = (0.0, 0.0, 0.0)
+            elif body.is_grounded:
+                phys.velocity = (vector[0], vector[1], 0.0)
+                phys.acceleration = (0,0,0)
+            else:
+                phys.velocity = (vector[0], vector[1], phys.velocity[2])
+                phys.acceleration = (0,0,-0.05)
+            
 
             if pygame.key.get_pressed()[pygame.K_0]:
                 phys.velocity = (0,0,0)
