@@ -19,6 +19,7 @@ from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Blueprint.BallMovementSystem import BallMovementSystem
 from Blueprint.GameEngine2 import GameEngine2
+import Blueprint.PlayerFactory as PlayerFactory
 
 
 settings = GameSettings()
@@ -36,11 +37,7 @@ assets.load_from_directory("Assets")
 
 entities = EntityRepository()
 
-#entities.add_entity(GhostFactory.build_a_ghost('Mam', 6,6))
-
-#entities.add_entity(GhostFactory.build_a_ball('Bam', 2,2))
-#entities.add_entity(GhostFactory.build_a_ball('Bam', 5,4))
-player_entity = entities.add_entity(GhostFactory.build_a_player('Mum', 2,2))
+player_entity = entities.add_entity(PlayerFactory.build_a_player('Mum', 2,2))
 
 
 game_environment = GameEnvironment(settings)
