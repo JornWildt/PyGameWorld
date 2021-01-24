@@ -8,6 +8,7 @@ class PlayerMovementSystem:
     def __init__(self, message_bus):
         self.last_direction = 0
         message_bus.subscribe('tile_collision', PlayerMovementSystem.on_tile_collision)
+        message_bus.subscribe('body_collision', PlayerMovementSystem.on_body_collision)
         message_bus.subscribe('set_player_position', PlayerMovementSystem.on_set_player_position)
 
     direction_vectors = [
@@ -40,6 +41,21 @@ class PlayerMovementSystem:
             body.velocity = (0,0,0)
             player.hit_tile = tile
 
+    def on_body_collision(game_environment, p):
+        entity = p[0]
+        hitBody = p[1]
+
+        # Make sure we react to player collisions only
+        player = entity.get_component_of_type(PlayerMovementComponent)
+        if player == None:
+            return
+
+        # Extract relevant componts from entity
+        playerBody = entity.get_component_of_type(BodyComponent)
+
+        playerBody.position = playerBody.previous_position
+        playerBody.velocity = (0,0,0)
+
 
     def update(self, game_environment):
         pressed_keys = pygame.key.get_pressed()
@@ -68,15 +84,18 @@ class PlayerMovementSystem:
                 player.hit_tile = None
 
             if pressed_keys[pygame.K_SPACE] and body.is_grounded:
-                phys.velocity = (vector[0], vector[1], 0.5)
+                phys.velocity = (vector[0], vector[1], 0.4)
                 phys.acceleration = (0.0, 0.0, 0.0)
             elif body.is_grounded:
-                phys.velocity = (vector[0], vector[1], 0.0)
+                phys.velocity = (vector[0]*2, vector[1]*2, 0.0)
                 phys.acceleration = (0,0,0)
             else:
-                phys.velocity = (vector[0], vector[1], phys.velocity[2])
+                phys.velocity = (vector[0] * 1.5, vector[1] * 1.5, phys.velocity[2])
                 phys.acceleration = (0,0,-0.05)
-            
+
+            if isinstance(body.ground_item, BodyComponent):
+                ground_phys = body.ground_item.entity.get_component_of_type(PhysicsComponent)
+                phys.velocity = (phys.velocity[0] + ground_phys.velocity[0], phys.velocity[1] + ground_phys.velocity[1], phys.velocity[2] + ground_phys.velocity[2])
 
             if pygame.key.get_pressed()[pygame.K_0]:
                 phys.velocity = (0,0,0)

@@ -18,6 +18,7 @@ from Blueprint.GhostFactory import GhostFactory
 from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Blueprint.BallMovementSystem import BallMovementSystem
+from Blueprint.PlatformMovementSystem import PlatformMovementSystem
 from Blueprint.GameEngine2 import GameEngine2
 import Blueprint.PlayerFactory as PlayerFactory
 
@@ -48,6 +49,7 @@ systems.add(PhysicsSystem())
 systems.add(CollisionDetectionSystem())
 systems.add(BallMovementSystem(message_bus))
 systems.add(PlayerMovementSystem(message_bus))
+systems.add(PlatformMovementSystem(message_bus))
 systems.add(DisplaySystem())
 
 scene = Scene(settings)

@@ -1,9 +1,23 @@
 ﻿{
+  "platform_sprites": {
+    "type": "spritesheet",
+    "file": "Random/Furniture3D.png",
+    "content": {
+      "platform": {
+        "type": "animation",
+        "rectangle": [0,0,64,64],
+        "rows": 1,
+        "cols": 1,
+        "volume": [1,1,1]
+      }
+    }
+  },
   "ball": {
     "type": "animation",
     "file": "Random/Ball3D.png",
+    "rectangle": [0,0,64,64],
     "rows": 1,
-    "cols": 1
+    "cols": 3
   },
   "teleport": {
     "type": "animation",
@@ -43,10 +57,6 @@
     "type": "spritesheet",
     "file": "Random/Stub3D.png",
     "content": {
-      "stub": {
-        "type": "image",
-        "position" : [0,0,64,64]
-      },
       "barrel": {
         "type": "image",
         "position" : [0,0,64,64]

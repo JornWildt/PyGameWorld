@@ -6,6 +6,7 @@ class SceneBuilder:
         self.scene = init_environment.scene
         self.assets = init_environment.assets
         self.collision_map = init_environment.collision_map
+        self.game_environment = init_environment
         self.symbol_map = {}
 
 

@@ -2,6 +2,8 @@
 from Core.Scene.TileType import *
 from ..SceneBuilder import SceneBuilder
 from Core.Messages.NewSceneMessage import NewSceneMessage
+from Blueprint.BallMovementSystem import BallMovementSystem
+import Blueprint.PlatformFactory as PlatformFactory
 
 
 class Scene_A_Builder(SceneBuilder):
@@ -27,6 +29,11 @@ class Scene_A_Builder(SceneBuilder):
         self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
         self.scene.place_cube(pos[0],pos[1],1, TileType.Wall, self.barrel_sprite)
 
+    def build_platform(self, symbol, pos):
+        self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
+        platform = PlatformFactory.build_a_platform('Platform', (pos[0],pos[1],1))
+        self.game_environment.entities_repository.add_entity(platform)
+
     def build_teleport(self, symbol, pos):
         self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
         self.scene.place_animated_cube(pos[0],pos[1],1, TileType.Space, self.teleport_sprite)
@@ -49,6 +56,7 @@ class Scene_A_Builder(SceneBuilder):
         self.define_tile_builder('X', Scene_A_Builder.build_wall)
         self.define_tile_builder('B', Scene_A_Builder.build_box)
         self.define_tile_builder('b', Scene_A_Builder.build_barrel)
+        self.define_tile_builder('P', Scene_A_Builder.build_platform)
 
         self.teleports = {
             '1': ('Scene_A1', (10,5,1)),
