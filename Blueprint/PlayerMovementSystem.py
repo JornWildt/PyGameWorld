@@ -25,6 +25,7 @@ class PlayerMovementSystem:
     def on_tile_collision(game_environment, p):
         entity = p[0]
         tile = p[1]
+        collisionNormal = p[2]
 
         # Make sure we react to player collisions only
         player = entity.get_component_of_type(PlayerMovementComponent)
@@ -32,14 +33,21 @@ class PlayerMovementSystem:
             return
 
         # Extract relevant componts from entity
-        body = entity.get_component_of_type(BodyComponent)
-        phys = entity.get_component_of_type(PhysicsComponent)
+        playerBody = entity.get_component_of_type(BodyComponent)
+        #playerPhys = entity.get_component_of_type(PhysicsComponent)
 
         # If hitting a map tile, backup to previous position
         if tile.tile_type.is_blocking:
-            body.position = body.previous_position
-            body.velocity = (0,0,0)
-            player.hit_tile = tile
+            # relVelocity = playerPhys.velocity
+            # dot = relVelocity[0] * collisionNormal[0] + relVelocity[1] * collisionNormal[1] + relVelocity[2] * collisionNormal[2]
+            # totalVelocity =  -1.2 * (dot + 0.0001)
+
+            # playerVelocityChange = (totalVelocity * collisionNormal[0], totalVelocity * collisionNormal[1], totalVelocity * collisionNormal[2])
+
+            # playerBody.position = (playerBody.position[0] + playerVelocityChange[0], playerBody.position[1] + playerVelocityChange[1], playerBody.position[2] + playerVelocityChange[2])
+            
+            playerBody.position = playerBody.previous_position
+            # player.hit_tile = tile
 
     def on_body_collision(game_environment, p):
         entity = p[0]
@@ -65,9 +73,7 @@ class PlayerMovementSystem:
 
         playerVelocityChange = (totalVelocity * collisionNormal[0], totalVelocity * collisionNormal[1], totalVelocity * collisionNormal[2])
 
-        #playerBody.position = playerBody.previous_position
         playerBody.position = (playerBody.position[0] + playerVelocityChange[0], playerBody.position[1] + playerVelocityChange[1], playerBody.position[2] + playerVelocityChange[2])
-        #playerPhys.velocity = (playerPhys.velocity[0] + playerVelocityChange[0], playerPhys.velocity[1] + playerVelocityChange[1], playerPhys.velocity[2] + playerVelocityChange[2])
 
 
     def update(self, game_environment):
@@ -78,23 +84,23 @@ class PlayerMovementSystem:
         # Go through all player components (there is only one, so it seems like a bit of overkill ...)
         for (player, body, phys, sprite) in game_environment.entities_repository.get_components_of_types(PlayerMovementComponent, BodyComponent, PhysicsComponent, SpriteComponent):
 
-            if direction != None and player.hit_tile != None:
-                # Directional vector towards the hit tile
-                tile_vector = (player.hit_tile.position[0] - body.position[0], player.hit_tile.position[1] - body.position[1])
+            # if direction != None and player.hit_tile != None:
+            #     # Directional vector towards the hit tile
+            #     tile_vector = (player.hit_tile.position[0] - body.position[0], player.hit_tile.position[1] - body.position[1])
                 
-                # Cross-product of intended movement and tile direction indicates their relationship
-                c = vector[0] * tile_vector[1] - vector[1] * tile_vector[0]
+            #     # Cross-product of intended movement and tile direction indicates their relationship
+            #     c = vector[0] * tile_vector[1] - vector[1] * tile_vector[0]
 
-                # c < 0 means tile is to the left of the intended movement direction, so turn right
-                if c < 0:
-                    direction = (direction + 1) % 8
-                else:
-                    direction = (direction - 1) % 8
+            #     # c < 0 means tile is to the left of the intended movement direction, so turn right
+            #     if c < 0:
+            #         direction = (direction + 1) % 8
+            #     else:
+            #         direction = (direction - 1) % 8
 
-                # Now update intended movement vector to the new direction
-                vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed, 0)
+            #     # Now update intended movement vector to the new direction
+            #     vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed, 0)
 
-                player.hit_tile = None
+            #     player.hit_tile = None
 
             if pressed_keys[pygame.K_SPACE] and body.is_grounded:
                 phys.velocity = (vector[0], vector[1], 0.4)
