@@ -73,5 +73,6 @@ class CollisionRegistration:
     def __init__(self, position, size, message_name, item):
         self.position = position
         self.size = size
+        self.size_2 = (size[0]/2, size[1]/2, size[2]/2)
         self.message_name = message_name
         self.item = item

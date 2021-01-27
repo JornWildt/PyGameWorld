@@ -9,7 +9,7 @@ from .PlatformMovementComponent import PlatformMovementComponent
 
 
 def build_a_platform(name, pos):
-    route = [(0, 0.01, 400), (4, 0.01, 400)]
+    route = [(0, 0.01, 400), (2, 0.01, 100), (4, 0.01, 400), (6, 0.01, 100)]
     vector = PlatformMovementComponent.direction_vectors[route[0][0]]
     platform = Entity([
         NameComponent(name),

@@ -44,17 +44,30 @@ class PlayerMovementSystem:
     def on_body_collision(game_environment, p):
         entity = p[0]
         hitBody = p[1]
+        collisionNormal = p[2]
 
         # Make sure we react to player collisions only
         player = entity.get_component_of_type(PlayerMovementComponent)
         if player == None:
             return
 
+        hitEntity = hitBody.entity
+        hitPhys = hitEntity.get_component_of_type(PhysicsComponent)
+
         # Extract relevant componts from entity
         playerBody = entity.get_component_of_type(BodyComponent)
+        playerPhys = entity.get_component_of_type(PhysicsComponent)
 
-        playerBody.position = playerBody.previous_position
-        playerBody.velocity = (0,0,0)
+        relVelocity = (hitPhys.velocity[0] - playerPhys.velocity[0], hitPhys.velocity[1] - playerPhys.velocity[1], hitPhys.velocity[2] - playerPhys.velocity[2])
+
+        dot = relVelocity[0] * collisionNormal[0] + relVelocity[1] * collisionNormal[1] + relVelocity[2] * collisionNormal[2]
+        totalVelocity = 1.2 * dot
+
+        playerVelocityChange = (totalVelocity * collisionNormal[0], totalVelocity * collisionNormal[1], totalVelocity * collisionNormal[2])
+
+        #playerBody.position = playerBody.previous_position
+        playerBody.position = (playerBody.position[0] + playerVelocityChange[0], playerBody.position[1] + playerVelocityChange[1], playerBody.position[2] + playerVelocityChange[2])
+        #playerPhys.velocity = (playerPhys.velocity[0] + playerVelocityChange[0], playerPhys.velocity[1] + playerVelocityChange[1], playerPhys.velocity[2] + playerVelocityChange[2])
 
 
     def update(self, game_environment):
@@ -87,19 +100,19 @@ class PlayerMovementSystem:
                 phys.velocity = (vector[0], vector[1], 0.4)
                 phys.acceleration = (0.0, 0.0, 0.0)
             elif body.is_grounded:
-                phys.velocity = (vector[0]*2, vector[1]*2, 0.0)
+                phys.velocity = (vector[0], vector[1], 0.0)
                 phys.acceleration = (0,0,0)
             else:
-                phys.velocity = (vector[0] * 1.5, vector[1] * 1.5, phys.velocity[2])
+                phys.velocity = (vector[0], vector[1], phys.velocity[2])
                 phys.acceleration = (0,0,-0.05)
 
             if isinstance(body.ground_item, BodyComponent):
                 ground_phys = body.ground_item.entity.get_component_of_type(PhysicsComponent)
                 phys.velocity = (phys.velocity[0] + ground_phys.velocity[0], phys.velocity[1] + ground_phys.velocity[1], phys.velocity[2] + ground_phys.velocity[2])
 
-            if pygame.key.get_pressed()[pygame.K_0]:
-                phys.velocity = (0,0,0)
-                body.position = (1,1,1)
+            # if pygame.key.get_pressed()[pygame.K_0]:
+            #     phys.velocity = (0,0,0)
+            #     body.position = (1,1,1)
 
             if direction != None:
                 self.last_direction = direction

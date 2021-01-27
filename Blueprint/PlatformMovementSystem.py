@@ -5,7 +5,6 @@ from .PlatformMovementComponent import PlatformMovementComponent
 class PlatformMovementSystem:
     def __init__(self, message_bus):
         pass
-        #message_bus.subscribe('tile_collision', BallMovementSystem.on_tile_collision)
 
 
     def update(self, game_environment):
@@ -19,3 +18,4 @@ class PlatformMovementSystem:
                 leg = plat.route[plat.leg]
                 vector = PlatformMovementComponent.direction_vectors[leg[0]]
                 phys.velocity = (vector[0] * leg[1], vector[1] * leg[1], 0)
+                
