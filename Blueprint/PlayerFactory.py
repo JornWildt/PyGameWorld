@@ -13,5 +13,5 @@ def build_a_player(name, x,y):
         PhysicsComponent((0,0,0), (0,0,0)),
         PlayerMovementComponent(),
         SpriteComponent('player_3')
-    ])
+    ], False)
     return player

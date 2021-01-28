@@ -19,6 +19,20 @@
         return entity
 
 
+    def remove_entity(self, entity):
+        del self.entities_index[entity.id]
+        for component_type in entity.components:
+            component_list = self.components_index[component_type]
+            component_list.remove(entity.components[component_type])
+
+
+    def clear_scene_entities(self):
+        for entity_id in list(self.entities_index):
+            entity = self.entities_index[entity_id]
+            if entity.is_scene_entity:
+                self.remove_entity(entity)
+
+
     def get_entity(self, id):
         return self.entities_index[id]
 

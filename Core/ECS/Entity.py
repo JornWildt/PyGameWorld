@@ -1,8 +1,9 @@
 ﻿import uuid
 
 class Entity:
-    def __init__(self, components):
+    def __init__(self, components, is_scene_entity):
         self.id = None
+        self.is_scene_entity = is_scene_entity
         self.components = {}
         for c in components:
             c.entity = self

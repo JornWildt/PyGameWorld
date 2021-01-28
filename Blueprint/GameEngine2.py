@@ -15,6 +15,7 @@ class GameEngine2(GameEngine):
     def on_frame_end(self):
         if GameEngine2.new_scene_builder != None:
             fade_screen(self.game_environment.screen)
+            self.game_environment.entities_repository.clear_scene_entities()
             GameEngine2.new_scene_builder(self.game_environment).build_scene()
             GameEngine2.new_scene_builder = None
             self.game_environment.message_bus.publish('set_player_position', SetPlayerPositionMessage(GameEngine2.new_scene_message.start_position))

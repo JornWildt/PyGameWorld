@@ -69,7 +69,7 @@ Scene_A1_Builder(game_environment).build_scene()
 sceneDisplay = Entity([
     NameComponent('Scene render'),
     DisplayComponent(scene)
-])
+], False)
 entities.add_entity(sceneDisplay)
 
 

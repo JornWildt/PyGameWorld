@@ -18,7 +18,7 @@ class GhostFactory:
             # PhysicsComponent((0,0,0), (0,0,0)), #(0.001, 0.001, 0.001)),
             BallMovementComponent(),
             SpriteComponent('ghost')
-        ])
+        ], True)
         return ghost
 
     
@@ -31,7 +31,7 @@ class GhostFactory:
             # PhysicsComponent((0,0,0), (0,0,0)), #(0.001, 0.001, 0.001)),
             BallMovementComponent(),
             SpriteComponent('ball')
-        ])
+        ], True)
         return ball
     
     @classmethod
@@ -42,5 +42,5 @@ class GhostFactory:
             PhysicsComponent((0,0,0), (0,0,0)),
             PlayerMovementComponent(),
             SpriteComponent('player_3')
-        ])
+        ], Talse)
         return player

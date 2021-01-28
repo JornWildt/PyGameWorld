@@ -17,5 +17,5 @@ def build_a_platform(name, pos):
         PhysicsComponent((vector[0] * route[0][1], vector[1] * route[0][1], 0), (0,0,0)),
         PlatformMovementComponent(route),
         SpriteComponent('platform')
-    ])
+    ], True)
     return platform
