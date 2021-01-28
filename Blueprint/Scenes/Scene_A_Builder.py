@@ -43,7 +43,7 @@ class Scene_A_Builder(SceneBuilder):
 
     def build_lava(self, symbol, pos):
         self.scene.place_animated_cube(pos[0],pos[1],0, TileType.Space, self.lava_sprite)
-        self.place_location_event_trigger((pos[0],pos[1],0), (0.5,0.5,1), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
+        self.place_location_event_trigger((pos[0],pos[1],0), (1,1,1), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
 
 
     def __init__(self, game_environment):

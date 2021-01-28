@@ -11,22 +11,22 @@ class Scene_A3_Builder(Scene_A_Builder):
 
         if symbol[1] == '1':
             self.scene.place_animated_cube(pos[0],pos[1],0, TileType.Space, self.lava_sprite)
-            self.place_location_event_trigger((pos[0],pos[1],0), (0.5,0.5,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
+            self.place_location_event_trigger((pos[0],pos[1],0), (1,1,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
             route = [(4, 0.03, 2), (0, 0.03, 2)]
             platform = PlatformFactory.build_a_platform('Platform', (pos[0],pos[1],2), route)
         if symbol[1] == '2':
             self.scene.place_animated_cube(pos[0],pos[1],0, TileType.Space, self.lava_sprite)
-            self.place_location_event_trigger((pos[0],pos[1],0), (0.5,0.5,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
+            self.place_location_event_trigger((pos[0],pos[1],0), (1,1,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
             route = [(0, 0.03, 2), (4, 0.03, 2)]
             platform = PlatformFactory.build_a_platform('Platform', (pos[0],pos[1],2), route)
         if symbol[1] == '3':
             self.scene.place_animated_cube(pos[0],pos[1],0, TileType.Space, self.lava_sprite)
-            self.place_location_event_trigger((pos[0],pos[1],0), (0.5,0.5,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
+            self.place_location_event_trigger((pos[0],pos[1],0), (1,1,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
             route = [(4, 0.02, 4), (2, 0.04, 3), (0,0.02,4), (6,0.04,3)]
             platform = PlatformFactory.build_a_platform('Platform', (pos[0],pos[1],1), route)
         if symbol[1] == '4':
             self.scene.place_animated_cube(pos[0],pos[1],0, TileType.Space, self.lava_sprite)
-            self.place_location_event_trigger((pos[0],pos[1],0), (0.5,0.5,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
+            self.place_location_event_trigger((pos[0],pos[1],0), (1,1,0.5), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
             route = [(2,0.04,3), (0,0.02,4), (6, 0.04, 3), (4, 0.02, 4)]
             platform = PlatformFactory.build_a_platform('Platform', (pos[0],pos[1],1), route)
         if symbol[1] == '5':
