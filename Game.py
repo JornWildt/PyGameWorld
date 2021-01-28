@@ -21,6 +21,7 @@ from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Blueprint.BallMovementSystem import BallMovementSystem
 from Blueprint.PlatformMovementSystem import PlatformMovementSystem
 from Blueprint.GameEngine2 import GameEngine2
+from Blueprint.Messages.SetPlayerPositionMessage import SetPlayerPositionMessage
 import Blueprint.PlayerFactory as PlayerFactory
 
 
@@ -65,7 +66,9 @@ game_environment.player_entity = player_entity
 game_environment.systems_repository = systems
 game_environment.entities_repository = entities
 
-Scene_A3_Builder(game_environment).build_scene()
+scene_builder = Scene_A3_Builder(game_environment)
+scene_builder.build_scene()
+message_bus.publish('set_player_position', SetPlayerPositionMessage(scene_builder.player_start_pos))
 
 sceneDisplay = Entity([
     NameComponent('Scene render'),
