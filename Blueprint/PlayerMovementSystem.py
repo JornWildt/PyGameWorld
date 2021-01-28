@@ -12,6 +12,7 @@ class PlayerMovementSystem:
         message_bus.subscribe('tile_collision', PlayerMovementSystem.on_tile_collision)
         message_bus.subscribe('body_collision', PlayerMovementSystem.on_body_collision)
         message_bus.subscribe('set_player_position', PlayerMovementSystem.on_set_player_position)
+        self.jump_count = 0
 
     def on_tile_collision(game_environment, p):
         entity = p[0]
@@ -25,19 +26,26 @@ class PlayerMovementSystem:
 
         # Extract relevant componts from entity
         playerBody = entity.get_component_of_type(BodyComponent)
-        #playerPhys = entity.get_component_of_type(PhysicsComponent)
+        playerPhys = entity.get_component_of_type(PhysicsComponent)
 
         # If hitting a map tile, backup to previous position
         if tile.tile_type.is_blocking:
-            # relVelocity = playerPhys.velocity
-            # dot = relVelocity[0] * collisionNormal[0] + relVelocity[1] * collisionNormal[1] + relVelocity[2] * collisionNormal[2]
-            # totalVelocity =  -1.2 * (dot + 0.0001)
+            relVelocity = playerPhys.velocity
+            dot = relVelocity[0] * collisionNormal[0] + relVelocity[1] * collisionNormal[1] + relVelocity[2] * collisionNormal[2]
+            totalVelocity =  -1.01 * (dot + 0.0001)
 
-            # playerVelocityChange = (totalVelocity * collisionNormal[0], totalVelocity * collisionNormal[1], totalVelocity * collisionNormal[2])
+            playerVelocityChange = (totalVelocity * collisionNormal[0], totalVelocity * collisionNormal[1], totalVelocity * collisionNormal[2])
 
-            # playerBody.position = (playerBody.position[0] + playerVelocityChange[0], playerBody.position[1] + playerVelocityChange[1], playerBody.position[2] + playerVelocityChange[2])
+            collision_map = game_environment.collision_map
+            collision_map.unregister_body(playerBody)
+            playerBody.position = (playerBody.position[0] + playerVelocityChange[0], playerBody.position[1] + playerVelocityChange[1], playerBody.position[2] + playerVelocityChange[2])
+            collision_map.register_body(playerBody)
+
+            # FIXME: Postpone assignment to end of frame
+            # playerPhys.velocity = (0,0,0)
+            playerPhys.acceleration = (0,0,0)
             
-            playerBody.position = playerBody.previous_position
+            # playerBody.position = playerBody.previous_position
             # player.hit_tile = tile
 
     def on_body_collision(game_environment, p):
@@ -64,7 +72,14 @@ class PlayerMovementSystem:
 
         playerVelocityChange = (totalVelocity * collisionNormal[0], totalVelocity * collisionNormal[1], totalVelocity * collisionNormal[2])
 
+        collision_map = game_environment.collision_map
+        collision_map.unregister_body(playerBody)
         playerBody.position = (playerBody.position[0] + playerVelocityChange[0], playerBody.position[1] + playerVelocityChange[1], playerBody.position[2] + playerVelocityChange[2])
+        collision_map.register_body(playerBody)
+
+        # FIXME: Postpone assignment to end of frame
+        # playerPhys.velocity = (0,0,0)
+        playerPhys.acceleration = (0,0,0)
 
 
     def update(self, game_environment):
@@ -94,17 +109,18 @@ class PlayerMovementSystem:
             #     player.hit_tile = None
 
             if pressed_keys[pygame.K_SPACE] and body.is_grounded:
-                phys.velocity = (vector[0], vector[1], 0.4)
+                phys.velocity = (vector[0], vector[1], 0.2)
                 phys.acceleration = (0.0, 0.0, 0.0)
+                self.jump_count += 1
             elif body.is_grounded:
                 # It seems fair to make sure a grounded player standas exactly on top of the ground (to compensate for various inaccuraties)
-                # ... but not all blocks have same height, so it blocks the player from going smoothly from one block to another (as it is now)
+                # ... but not all blocks have same height, so it may block the player from going smoothly from one block to another
                 body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
                 phys.velocity = (vector[0], vector[1], 0.0)
-                phys.acceleration = (0,0,0)
+                #phys.acceleration = (0,0,0)
             else:
-                phys.velocity = (vector[0], vector[1], phys.velocity[2])
-                phys.acceleration = (0,0,-0.05)
+                #phys.velocity = (vector[0], vector[1], phys.velocity[2])
+                phys.acceleration = (0,0,-0.02)
 
             if isinstance(body.ground_item, BodyComponent):
                 ground_phys = body.ground_item.entity.get_component_of_type(PhysicsComponent)
@@ -123,7 +139,8 @@ class PlayerMovementSystem:
             # Select the appropriate sprite for the direction
             sprite.sprite_id = 'player_' + str(sprite_direction)
 
-            Texts.show_text(game_environment.screen, "{:2.4f}".format(body.position[2]), (100,10))
+            Texts.show_text(game_environment.screen, "{:2.4f}".format(body.position[2]), (50,10))
+            Texts.show_text(game_environment.screen, "{:3.0f}".format(self.jump_count), (150,10))
 
 
     def get_current_input_vector(pressed_keys):

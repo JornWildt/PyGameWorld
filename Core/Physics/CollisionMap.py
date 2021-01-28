@@ -51,9 +51,29 @@
         for x in range(x0,x1):
             for y in range(y0,y1):
                 for z in range(z0,z1):
-                    if self.map[x][y][z] == None:
-                        self.map[x][y][z] = []
-                    self.map[x][y][z].append(CollisionRegistration(body.position, body.size, 'body_collision', body))
+                    list = self.map[x][y][z]
+                    if list == None:
+                        list = self.map[x][y][z] = []
+                    list.append(CollisionRegistration(body.position, body.size, 'body_collision', body))
+
+
+    def unregister_body(self, body):
+        x0 = max(0, int(body.position[0] - body.size_2[0]))
+        x1 = min(int(body.position[0] + body.size[0] - body.size_2[0]), self.size[0])
+        y0 = max(0, int(body.position[1] - body.size_2[1]))
+        y1 = min(int(body.position[1] + body.size[1] - body.size_2[1]), self.size[1])
+        z0 = max(0, int(body.position[2] - body.size_2[2]))
+        z1 = min(int(body.position[2] + body.size[2] - body.size_2[2]), self.size[2])
+
+        # Register item in all the cubes it overlaps
+        for x in range(x0,x1):
+            for y in range(y0,y1):
+                for z in range(z0,z1):
+                    list = self.map[x][y][z]
+                    if list != None:
+                        for i, registration in enumerate(list):
+                            if registration.item == body:
+                                del list[i]
 
 
     def get_items_at(self, pos):

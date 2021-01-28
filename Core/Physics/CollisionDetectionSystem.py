@@ -12,23 +12,12 @@ class CollisionDetectionSystem:
             collision_map.register_body(body)
 
         for body in game_environment.entities_repository.get_components_of_type(BodyComponent):
-            ground_body = BodyComponent((body.position[0], body.position[1], body.position[2]-0.05), body.ground_size)
-            items = self.checkCollision(collision_map, ground_body)
-
-            body.is_grounded = False
-            body.ground_item = None
-            if len(items) > 0:
-                if isinstance(items[0].item.item, Tile) and items[0].item.item.tile_type.is_blocking or isinstance(items[0].item.item, BodyComponent):
-                    body.is_grounded = True
-                    body.ground_item = items[0].item.item
-
-        for body in game_environment.entities_repository.get_components_of_type(BodyComponent):
-            items = self.checkCollision(collision_map, body)
+            items = CollisionDetectionSystem.checkCollision(collision_map, body)
             for item in items:
                 game_environment.message_bus.publish(item.item.message_name, (body.entity, item.item.item, item.collisionNormal))
 
 
-
+    @classmethod
     def checkCollision(self, collision_map, body):
         body_x_min = body.position[0] - body.size_2[0]
         body_y_min = body.position[1] - body.size_2[1]
@@ -45,27 +34,30 @@ class CollisionDetectionSystem:
         z0 = max(0, int(body_z_min) - 2)
         z1 = min(int(body_z_max) + 2, collision_map.size[2])
         found = False
-        
-        # Only look for a colliding item until a item is found, then skip the rest for the current body
+
+        result = []
+        visited = set()
+
         for x in range(x0,x1) if  not found else []:
             for y in range(y0,y1) if not found else []:
                 for z in range(z0,z1) if not found else []:
                     items = collision_map.get_items_at((x,y,z))
-                    result = []
                     for item in items:
-                        item_x_min = item.position[0] - item.size_2[0]
-                        item_y_min = item.position[1] - item.size_2[1]
-                        item_z_min = item.position[2] # - item.size_2[2]
+                        if item not in visited and item.item != body:
+                            visited.add(item)
 
-                        item_x_max = item_x_min + item.size[0]
-                        item_y_max = item_y_min + item.size[1]
-                        item_z_max = item_z_min + item.size[2]
+                            item_x_min = item.position[0] - item.size_2[0]
+                            item_y_min = item.position[1] - item.size_2[1]
+                            item_z_min = item.position[2] # - item.size_2[2]
 
-                        x_overlap = min(body_x_max - item_x_min, item_x_max - body_x_min)
-                        y_overlap = min(body_y_max - item_y_min, item_y_max - body_y_min)
-                        z_overlap = min(body_z_max - item_z_min, item_z_max - body_z_min)
+                            item_x_max = item_x_min + item.size[0]
+                            item_y_max = item_y_min + item.size[1]
+                            item_z_max = item_z_min + item.size[2]
 
-                        if item.item != body:
+                            x_overlap = min(body_x_max - item_x_min, item_x_max - body_x_min)
+                            y_overlap = min(body_y_max - item_y_min, item_y_max - body_y_min)
+                            z_overlap = min(body_z_max - item_z_min, item_z_max - body_z_min)
+
                             collisionNormal = None
 
                             if x_overlap > 0 and y_overlap > 0 and z_overlap > 0:
@@ -84,12 +76,12 @@ class CollisionDetectionSystem:
                                         collisionNormal = (0,0,-1)
                                     else:
                                         collisionNormal = (0,0,1)
-                                result.append(CollisionData(item,collisionNormal))
-                                
-                    if len(result) > 0:
-                        return result
 
-        return []
+                                if collisionNormal[1] == 1 and body.size[2] > 1:
+                                    asdfdf = 341
+                                result.append(CollisionData(item,collisionNormal))
+
+        return result
 
 
 class CollisionData:

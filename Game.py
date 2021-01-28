@@ -10,6 +10,7 @@ from Core.SimpleComponents.NameComponent import NameComponent
 from Core.Physics.PhysicsSystem import PhysicsSystem
 from Core.Physics.CollisionMap import CollisionMap
 from Core.Physics.CollisionDetectionSystem import CollisionDetectionSystem
+from Core.Physics.GroundDetectionSystem import GroundDetectionSystem
 from Core.Rendering.DisplaySystem import DisplaySystem
 from Core.Rendering.DisplayComponent import DisplayComponent
 from Core.Scene.Scene import Scene
@@ -49,6 +50,7 @@ message_bus = MessageBus(game_environment)
 systems = SystemsRepository()
 systems.add(PhysicsSystem())
 systems.add(CollisionDetectionSystem())
+systems.add(GroundDetectionSystem())
 systems.add(BallMovementSystem(message_bus))
 systems.add(PlayerMovementSystem(message_bus))
 systems.add(PlatformMovementSystem(message_bus))
