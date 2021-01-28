@@ -97,7 +97,8 @@ class PlayerMovementSystem:
                 phys.acceleration = (0.0, 0.0, 0.0)
             elif body.is_grounded:
                 # It seems fair to make sure a grounded player standas exactly on top of the ground (to compensate for various inaccuraties)
-                body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
+                # ... but not all blocks have same height, so it blocks the player from going smoothly from one block to another (as it is now)
+                # body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
                 phys.velocity = (vector[0], vector[1], 0.0)
                 phys.acceleration = (0,0,0)
             else:
