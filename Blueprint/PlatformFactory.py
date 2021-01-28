@@ -9,8 +9,9 @@ from .PlatformMovementComponent import PlatformMovementComponent
 from Blueprint.Constants import Constants
 
 
-def build_a_platform(name, pos):
-    route = [(0, 0.01, 400), (2, 0.01, 100), (4, 0.01, 400), (6, 0.01, 100)]
+def build_a_platform(name, pos, route = None):
+    if route == None:
+        route = [(0, 0.01, 400), (2, 0.01, 100), (4, 0.01, 400), (6, 0.01, 100)]
     vector = Constants.direction_vectors[route[0][0]]
     platform = Entity([
         NameComponent(name),

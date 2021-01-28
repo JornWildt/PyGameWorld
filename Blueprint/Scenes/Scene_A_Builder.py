@@ -15,11 +15,13 @@ class Scene_A_Builder(SceneBuilder):
         self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
         self.scene.place_cube(pos[0],pos[1],1, TileType.Wall, None)
         self.scene.place_cube(pos[0],pos[1],2, TileType.Wall, None)
+        self.scene.place_cube(pos[0],pos[1],3, TileType.Wall, None)
 
     def build_wall(self, symbol, pos):
         self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
         self.scene.place_cube(pos[0],pos[1],1, TileType.Wall, self.wall_sprite)
         self.scene.place_cube(pos[0],pos[1],2, TileType.Wall, self.wall_sprite)
+        self.scene.place_cube(pos[0],pos[1],3, TileType.Wall, None)
 
     def build_box(self, symbol, pos):
         self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
@@ -51,12 +53,12 @@ class Scene_A_Builder(SceneBuilder):
         self.barrel_sprite = assets['barrel']
         self.teleport_sprite = assets['teleport']
 
-        self.define_tile_builder('.', Scene_A_Builder.build_floor)
-        self.define_tile_builder('x', Scene_A_Builder.build_see_through_wall)
-        self.define_tile_builder('X', Scene_A_Builder.build_wall)
-        self.define_tile_builder('B', Scene_A_Builder.build_box)
-        self.define_tile_builder('b', Scene_A_Builder.build_barrel)
-        self.define_tile_builder('P', Scene_A_Builder.build_platform)
+        self.define_tile_builder('.', self.build_floor)
+        self.define_tile_builder('x', self.build_see_through_wall)
+        self.define_tile_builder('X', self.build_wall)
+        self.define_tile_builder('B', self.build_box)
+        self.define_tile_builder('b', self.build_barrel)
+        self.define_tile_builder('P', self.build_platform)
 
         self.teleports = {
             '1': ('Scene_A1', (10,5,1)),

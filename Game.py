@@ -16,6 +16,7 @@ from Core.Scene.Scene import Scene
 from Core.AssetsManager import AssetsManager
 from Blueprint.GhostFactory import GhostFactory
 from Blueprint.Scenes.Scene_A1_Builder import Scene_A1_Builder
+from Blueprint.Scenes.Scene_A3_Builder import Scene_A3_Builder
 from Blueprint.PlayerMovementSystem import PlayerMovementSystem
 from Blueprint.BallMovementSystem import BallMovementSystem
 from Blueprint.PlatformMovementSystem import PlatformMovementSystem
@@ -64,7 +65,7 @@ game_environment.player_entity = player_entity
 game_environment.systems_repository = systems
 game_environment.entities_repository = entities
 
-Scene_A1_Builder(game_environment).build_scene()
+Scene_A3_Builder(game_environment).build_scene()
 
 sceneDisplay = Entity([
     NameComponent('Scene render'),

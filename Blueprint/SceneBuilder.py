@@ -31,7 +31,7 @@ class SceneBuilder:
                 symbol2 = scene_map_array[y][x*2+1] if x*2+1 < len(scene_map_array[y]) else ' '
                 if symbol1 != ' ':
                     builder_method = self.symbol_map[symbol1]
-                    builder_method(self, (symbol1, symbol2), (x,y))
+                    builder_method((symbol1, symbol2), (x,y))
 
         self.collision_map.load_from_scene(self.scene)
 
