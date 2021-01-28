@@ -1,6 +1,7 @@
 from Core.Physics.PhysicsComponent import PhysicsComponent
 from Core.Physics.BodyComponent import BodyComponent
 from .PlatformMovementComponent import PlatformMovementComponent
+from Blueprint.Constants import Constants
 
 class PlatformMovementSystem:
     def __init__(self, message_bus):
@@ -16,6 +17,6 @@ class PlatformMovementSystem:
                 if plat.leg >= len(plat.route):
                     plat.leg = 0
                 leg = plat.route[plat.leg]
-                vector = PlatformMovementComponent.direction_vectors[leg[0]]
+                vector = Constants.direction_vectors[leg[0]]
                 phys.velocity = (vector[0] * leg[1], vector[1] * leg[1], 0)
                 

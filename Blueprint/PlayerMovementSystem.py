@@ -3,6 +3,7 @@ from Core.Physics.PhysicsComponent import PhysicsComponent
 from Core.Physics.BodyComponent import BodyComponent
 from Core.Rendering.SpriteComponent import SpriteComponent
 from Blueprint.PlayerMovementComponent import PlayerMovementComponent
+from Blueprint.Constants import Constants
 
 class PlayerMovementSystem:
     def __init__(self, message_bus):
@@ -11,17 +12,6 @@ class PlayerMovementSystem:
         message_bus.subscribe('body_collision', PlayerMovementSystem.on_body_collision)
         message_bus.subscribe('set_player_position', PlayerMovementSystem.on_set_player_position)
 
-    direction_vectors = [
-        (0,-1),
-        (0.71,-0.71),
-        (1,0),
-        (0.71,0.71),
-        (0,1),
-        (-0.71,0.71),
-        (-1,0),
-        (-0.71,-0.71)
-    ]
-    
     def on_tile_collision(game_environment, p):
         entity = p[0]
         tile = p[1]
@@ -98,7 +88,7 @@ class PlayerMovementSystem:
             #         direction = (direction - 1) % 8
 
             #     # Now update intended movement vector to the new direction
-            #     vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed, 0)
+            #     vector = (Constants.direction_vectors[direction][0] * speed, Constants.direction_vectors[direction][1] * speed, 0)
 
             #     player.hit_tile = None
 
@@ -107,7 +97,7 @@ class PlayerMovementSystem:
                 phys.acceleration = (0.0, 0.0, 0.0)
             elif body.is_grounded:
                 # It seems fair to make sure a grounded player standas exactly on top of the ground (to compensate for various inaccuraties)
-                body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2])
+                body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
                 phys.velocity = (vector[0], vector[1], 0.0)
                 phys.acceleration = (0,0,0)
             else:
@@ -157,7 +147,7 @@ class PlayerMovementSystem:
 
         if direction != None:
             direction = (direction + 1) % 8
-            vector = (PlayerMovementSystem.direction_vectors[direction][0] * speed, PlayerMovementSystem.direction_vectors[direction][1] * speed, 0)
+            vector = (Constants.direction_vectors[direction][0] * speed, Constants.direction_vectors[direction][1] * speed, 0)
         else:
             vector = (0,0,0)
 

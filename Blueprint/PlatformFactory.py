@@ -6,11 +6,12 @@ from Core.Rendering.SpriteComponent import SpriteComponent
 from .PlayerMovementComponent import PlayerMovementComponent
 from .BallMovementComponent import BallMovementComponent
 from .PlatformMovementComponent import PlatformMovementComponent
+from Blueprint.Constants import Constants
 
 
 def build_a_platform(name, pos):
     route = [(0, 0.01, 400), (2, 0.01, 100), (4, 0.01, 400), (6, 0.01, 100)]
-    vector = PlatformMovementComponent.direction_vectors[route[0][0]]
+    vector = Constants.direction_vectors[route[0][0]]
     platform = Entity([
         NameComponent(name),
         BodyComponent(pos, (0.99,0.99,0.99)),
