@@ -106,6 +106,8 @@ class PlayerMovementSystem:
                 phys.velocity = (vector[0], vector[1], 0.4)
                 phys.acceleration = (0.0, 0.0, 0.0)
             elif body.is_grounded:
+                # It seems fair to make sure a grounded player standas exactly on top of the ground (to compensate for various inaccuraties)
+                body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2])
                 phys.velocity = (vector[0], vector[1], 0.0)
                 phys.acceleration = (0,0,0)
             else:
