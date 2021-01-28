@@ -10,14 +10,21 @@ from Blueprint.Constants import Constants
 
 
 def build_a_platform(name, pos, route = None):
+
+    # Route is (direction, speed, distance)
     if route == None:
-        route = [(0, 0.01, 400), (2, 0.01, 100), (4, 0.01, 400), (6, 0.01, 100)]
+        route = [(0, 0.01, 4), (2, 0.01, 1), (4, 0.01, 4), (6, 0.01, 1)]
+
+    # Convert distance to step count (distance / speed)
+    for i, leg in enumerate(route):
+        route[i] = (leg[0], leg[1], leg[2] / leg[1])
+
     vector = Constants.direction_vectors[route[0][0]]
     platform = Entity([
         NameComponent(name),
         BodyComponent(pos, (0.99,0.99,0.99)),
         PhysicsComponent((vector[0] * route[0][1], vector[1] * route[0][1], 0), (0,0,0)),
-        PlatformMovementComponent(route),
+        PlatformMovementComponent(route, pos),
         SpriteComponent('platform')
     ], True)
     return platform

@@ -16,6 +16,7 @@ class PlatformMovementSystem:
                 plat.leg = plat.leg + 1
                 if plat.leg >= len(plat.route):
                     plat.leg = 0
+                    body.position = plat.start_position
                 leg = plat.route[plat.leg]
                 vector = Constants.direction_vectors[leg[0]]
                 phys.velocity = (vector[0] * leg[1], vector[1] * leg[1], 0)
