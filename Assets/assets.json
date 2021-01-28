@@ -25,6 +25,12 @@
     "rows": 1,
     "cols": 6
   },
+  "lava": {
+    "type": "animation",
+    "file": "Random/Lava3D.png",
+    "rows": 1,
+    "cols": 1
+  },
   "floor_sprites": {
     "type": "spritesheet",
     "file": "Random/Floor3D.png",

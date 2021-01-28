@@ -1,8 +1,10 @@
-﻿from .Scenes.Scene_A1_Builder import Scene_A1_Builder
-from .Scenes.Scene_A2_Builder import Scene_A2_Builder
-from .Messages.SetPlayerPositionMessage import SetPlayerPositionMessage
-from Core.Rendering.Fader import fade_screen
+﻿from Core.Rendering.Fader import fade_screen
 from Core.GameEngine import GameEngine
+from .Scenes.Scene_A1_Builder import Scene_A1_Builder
+from .Scenes.Scene_A2_Builder import Scene_A2_Builder
+from .Scenes.Scene_A3_Builder import Scene_A3_Builder
+from .Messages.SetPlayerPositionMessage import SetPlayerPositionMessage
+from Blueprint.PlayerMovementComponent import PlayerMovementComponent
 
 
 class GameEngine2(GameEngine):
@@ -23,8 +25,16 @@ class GameEngine2(GameEngine):
 
 
     def on_new_scene(game_environment, collision):
+        entity = collision[0]
+        
+        player = entity.get_component_of_type(PlayerMovementComponent)
+        if player == None:
+            return
+
         GameEngine2.new_scene_message = msg = collision[1]
         if msg.scene_name == 'Scene_A1':
             GameEngine2.new_scene_builder = Scene_A1_Builder
-        else:
+        elif msg.scene_name == 'Scene_A2':
             GameEngine2.new_scene_builder = Scene_A2_Builder
+        else:
+            GameEngine2.new_scene_builder = Scene_A3_Builder

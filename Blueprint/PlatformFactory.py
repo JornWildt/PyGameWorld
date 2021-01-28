@@ -22,7 +22,7 @@ def build_a_platform(name, pos, route = None):
     vector = Constants.direction_vectors[route[0][0]]
     platform = Entity([
         NameComponent(name),
-        BodyComponent(pos, (0.99,0.99,0.99)),
+        BodyComponent(pos, (0.99,0.99,1)),
         PhysicsComponent((vector[0] * route[0][1], vector[1] * route[0][1], 0), (0,0,0)),
         PlatformMovementComponent(route, pos),
         SpriteComponent('platform')

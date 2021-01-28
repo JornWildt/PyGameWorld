@@ -10,3 +10,4 @@ class DisplaySystem:
 
         for component in game_environment.entities_repository.get_components_of_type(DisplayComponent):
             component.display.render(game_environment)
+

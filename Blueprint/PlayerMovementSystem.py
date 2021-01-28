@@ -1,4 +1,5 @@
 ﻿import pygame
+from Core.Utility import Texts
 from Core.Physics.PhysicsComponent import PhysicsComponent
 from Core.Physics.BodyComponent import BodyComponent
 from Core.Rendering.SpriteComponent import SpriteComponent
@@ -98,7 +99,7 @@ class PlayerMovementSystem:
             elif body.is_grounded:
                 # It seems fair to make sure a grounded player standas exactly on top of the ground (to compensate for various inaccuraties)
                 # ... but not all blocks have same height, so it blocks the player from going smoothly from one block to another (as it is now)
-                # body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
+                body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
                 phys.velocity = (vector[0], vector[1], 0.0)
                 phys.acceleration = (0,0,0)
             else:
@@ -121,6 +122,8 @@ class PlayerMovementSystem:
 
             # Select the appropriate sprite for the direction
             sprite.sprite_id = 'player_' + str(sprite_direction)
+
+            Texts.show_text(game_environment.screen, "{:2.4f}".format(body.position[2]), (100,10))
 
 
     def get_current_input_vector(pressed_keys):

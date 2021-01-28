@@ -39,7 +39,11 @@ class Scene_A_Builder(SceneBuilder):
     def build_teleport(self, symbol, pos):
         self.scene.place_cube(pos[0],pos[1],0, TileType.Floor, self.floor_wall_sprite)
         self.scene.place_animated_cube(pos[0],pos[1],1, TileType.Space, self.teleport_sprite)
-        self.place_location_event_trigger((pos[0],pos[1],1), (0.5,0.5,1), 'new_scene', NewSceneMessage(self.teleports[symbol[1]][0], self.teleports[symbol[1]][1]))
+        self.place_location_event_trigger((pos[0],pos[1],1), (0.5,0.5,0.5), 'new_scene', NewSceneMessage(self.teleports[symbol[1]][0], self.teleports[symbol[1]][1]))
+
+    def build_lava(self, symbol, pos):
+        self.scene.place_animated_cube(pos[0],pos[1],0, TileType.Space, self.lava_sprite)
+        self.place_location_event_trigger((pos[0],pos[1],0), (0.5,0.5,1), 'new_scene', NewSceneMessage('Scene_A3', self.player_start_pos))
 
 
     def __init__(self, game_environment):
@@ -52,12 +56,14 @@ class Scene_A_Builder(SceneBuilder):
         self.box_sprite = assets['box']
         self.barrel_sprite = assets['barrel']
         self.teleport_sprite = assets['teleport']
+        self.lava_sprite = assets['lava']
 
         self.define_tile_builder('.', self.build_floor)
         self.define_tile_builder('x', self.build_see_through_wall)
         self.define_tile_builder('X', self.build_wall)
         self.define_tile_builder('B', self.build_box)
         self.define_tile_builder('b', self.build_barrel)
+        self.define_tile_builder('*', self.build_lava)
         self.define_tile_builder('P', self.build_platform)
 
         self.teleports = {
@@ -67,4 +73,4 @@ class Scene_A_Builder(SceneBuilder):
             '4': ('Scene_A2', (9,6,1))
         }
 
-        self.define_tile_builder('T', Scene_A_Builder.build_teleport)
+        self.define_tile_builder('T', self.build_teleport)
