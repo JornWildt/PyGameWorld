@@ -14,6 +14,7 @@ class PlayerMovementSystem:
         message_bus.subscribe('set_player_position', PlayerMovementSystem.on_set_player_position)
         self.jump_count = 0
 
+
     def on_tile_collision(game_environment, p):
         entity = p[0]
         tile = p[1]
@@ -28,7 +29,7 @@ class PlayerMovementSystem:
         playerBody = entity.get_component_of_type(BodyComponent)
         playerPhys = entity.get_component_of_type(PhysicsComponent)
 
-        # If hitting a map tile, backup to previous position
+        # If hitting a map tile, backup to previous position (by bouncing off the item)
         if tile.tile_type.is_blocking:
             relVelocity = playerPhys.velocity
             dot = relVelocity[0] * collisionNormal[0] + relVelocity[1] * collisionNormal[1] + relVelocity[2] * collisionNormal[2]
@@ -41,12 +42,8 @@ class PlayerMovementSystem:
             playerBody.position = (playerBody.position[0] + playerVelocityChange[0], playerBody.position[1] + playerVelocityChange[1], playerBody.position[2] + playerVelocityChange[2])
             collision_map.register_body(playerBody)
 
-            # FIXME: Postpone assignment to end of frame
-            # playerPhys.velocity = (0,0,0)
             playerPhys.acceleration = (0,0,0)
-            
-            # playerBody.position = playerBody.previous_position
-            # player.hit_tile = tile
+
 
     def on_body_collision(game_environment, p):
         entity = p[0]
@@ -90,24 +87,6 @@ class PlayerMovementSystem:
         # Go through all player components (there is only one, so it seems like a bit of overkill ...)
         for (player, body, phys, sprite) in game_environment.entities_repository.get_components_of_types(PlayerMovementComponent, BodyComponent, PhysicsComponent, SpriteComponent):
 
-            # if direction != None and player.hit_tile != None:
-            #     # Directional vector towards the hit tile
-            #     tile_vector = (player.hit_tile.position[0] - body.position[0], player.hit_tile.position[1] - body.position[1])
-                
-            #     # Cross-product of intended movement and tile direction indicates their relationship
-            #     c = vector[0] * tile_vector[1] - vector[1] * tile_vector[0]
-
-            #     # c < 0 means tile is to the left of the intended movement direction, so turn right
-            #     if c < 0:
-            #         direction = (direction + 1) % 8
-            #     else:
-            #         direction = (direction - 1) % 8
-
-            #     # Now update intended movement vector to the new direction
-            #     vector = (Constants.direction_vectors[direction][0] * speed, Constants.direction_vectors[direction][1] * speed, 0)
-
-            #     player.hit_tile = None
-
             if pressed_keys[pygame.K_SPACE] and body.is_grounded:
                 phys.velocity = (vector[0], vector[1], 0.2)
                 phys.acceleration = (0.0, 0.0, 0.0)
@@ -117,12 +96,12 @@ class PlayerMovementSystem:
                 # ... but not all blocks have same height, so it may block the player from going smoothly from one block to another
                 body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
                 phys.velocity = (vector[0], vector[1], 0.0)
-                #phys.acceleration = (0,0,0)
             else:
-                #phys.velocity = (vector[0], vector[1], phys.velocity[2])
+                # Start falling down
                 phys.acceleration = (0,0,-0.02)
 
             if isinstance(body.ground_item, BodyComponent):
+                # Add speed of grounded platform to speed of player
                 ground_phys = body.ground_item.entity.get_component_of_type(PhysicsComponent)
                 phys.velocity = (phys.velocity[0] + ground_phys.velocity[0], phys.velocity[1] + ground_phys.velocity[1], phys.velocity[2] + ground_phys.velocity[2])
 
