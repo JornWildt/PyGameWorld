@@ -95,7 +95,16 @@ class PlayerMovementSystem:
                 # It seems fair to make sure a grounded player standas exactly on top of the ground (to compensate for various inaccuraties)
                 # ... but not all blocks have same height, so it may block the player from going smoothly from one block to another
                 body.position = (body.position[0], body.position[1], body.ground_item.position[2] + body.ground_item.size[2] + 0.001)
-                phys.velocity = (vector[0], vector[1], 0.0)
+
+                # Simulate some sort of acceleration when changing direction, such that we can make tiny small steps
+                if direction != player.prev_direction:
+                    player.speed = 0
+                    player.prev_direction = direction
+                else:
+                    if player.speed < 1:
+                        player.speed += 0.2
+                        
+                phys.velocity = (vector[0] * player.speed, vector[1] * player.speed, 0.0)
             else:
                 # Start falling down
                 phys.acceleration = (0,0,-0.02)
