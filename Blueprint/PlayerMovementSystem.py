@@ -103,7 +103,10 @@ class PlayerMovementSystem:
                 else:
                     if player.speed < 1:
                         player.speed += 0.2
-                        
+
+                if direction == None:
+                    player.speed = 0
+
                 phys.velocity = (vector[0] * player.speed, vector[1] * player.speed, 0.0)
             else:
                 # Start falling down

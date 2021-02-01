@@ -43,10 +43,10 @@ class Scene_A3_Builder(Scene_A_Builder):
         self.player_start_pos = (3,3,2)
         self.scene_map = '''
 x X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X X
-x . . . . . . . . . . X * * * * * * * * * * * X P3* * * * * * * * B . . . X
-x . . . P5. . . . . B X * * P1P1* * * * P1P1* X * * * * * * * * B B B . . X
-x . . B . . . . . . B B B B B B B B B B B B B B * * * * * * * * B B B B . X
-x . . . . . . . . . B X * * * * * P2P2* * * * B * * * * * * * * B B B . . X
-x . . . . . . . . . . X * * * * * * * * * * * X * * * * P4* * * * B . . . X
+x B * * * * * * . . . X * * * * * * * * * * * X P3* * * * * * * * B . . . X
+x B B . P5. . * * * B X * * P1P1* * * * P1P1* X * * * * * * * * B B B . . X
+x B B B . . . * . . B B B B B B B B B B B B B B * * * * * * * * B B B B . X
+x B B . . . . * * * B X * * * * * P2P2* * * * B * * * * * * * * B B B . . X
+x B * * * * * * . . . X * * * * * * * * * * * X * * * * P4* * * * B . . . X
 x x x x x x x x x x x X x x x x x x x x x x x X x x x x x x x x x x x x x X
 '''
